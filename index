@@ -1,110 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Revive your vehicle's shine with premium car detailing services." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Buff Stop</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+
+    html {
+      scroll-behavior: smooth;
+    }
     body {
+      font-family: 'Open Sans', sans-serif;
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: #fff;
-      color: #111;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
     }
     header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+    }
+    header img {
+      height: 50px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a,
+    nav ul li button {
+      background: none;
+      border: none;
+      color: #333;  display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0.5em 1em;
+      transition: all 0.3s ease;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1em;
+      font-weight: 1000;
+      text-transform: uppercase;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    nav ul li a:hover,
+    nav ul li button:hover {
       background: #dc143c;
       color: white;
-      padding: 1.5em;
-      text-align: center;
     }
-    nav {
-      background: #111;
-      color: white;
-      padding: 1em;
-      text-align: center;
+    .dropdown-menu {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 0.5em 1em;
+      list-style: none;
+      min-width: 180px;
     }
-    nav a {
-      color: white;
-      margin: 0 1em;
+    nav ul li.show .dropdown-menu {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 0.5em 0;
+      color: #333;
       text-decoration: none;
-      font-weight: bold;
+      transition: color 0.2s ease;
+      font-size: 0.85em;
     }
-    .section {
-      padding: 2em;
-      max-width: 900px;
-      margin: 0 auto;
+    .dropdown-menu li a:hover {
+      color: #dc143c;
+    }
+    main {
+      margin-top: 100px;
+    }
+    section {
+      max-width: 960px;
+      margin: auto;
+      padding: 2em 1em;
     }
     .banner {
-      width: 100%;
+      display: flex;
+      background-color: black;
+      color: white;
+      align-items: center;
+      justify-content: ceter;
+      padding-right: 2em;
+    }
+    .banner img {
+      max-width: 50%;
       height: auto;
-      background: #f4f4f4;
+    }
+    .banner-text {
+      text-align: right;
+      max-width: 100%;
+      margin-left: 2em;
+    }
+    .banner-text h1 {
+      font-size: 2em;
+      color: white;
+    }
+    .banner-text p {
+      font-size: 1.1em;
+      color: #ccc;
+    }
+    .banner-text a {
+      display: inline-block;
+      margin-top: 1em;
+      background-color: #e5093f;
+      color: white;
+      padding: 0.75em 1.5em;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+    #gallery h2 {
+      text-align: center;
+      color: #dc143c;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5em;
+    }
+    .gallery img {
+      width: 100%;
+      height: 270px;
+      object-fit: contain;
+    }
+    .contact-section {
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      margin-top: 2em;
+      text-align: center;
+    }
+    .contact-section h2 {
+      color: #dc143c;
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    .contact-section p {
+      font-size: 1.2em;
+      margin-bottom: 2em;
+    }
+    .contact-section form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      align-items: center;
+    }
+    .contact-section input,
+    .contact-section textarea {
+      padding: 1em;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .attachment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      font-size: 0.95em;
+    }
+    .attachment-row span {
+      display: flex;
+      align-items: center;
+      color: #dc143c;
+    }
+    .attachment-row span::before {
+      content: "\1F4CE";
+      margin-right: 0.3em;
+    }
+
+    .contact-section button {
+      background-color: #dc143c;
+      color: white;
+      padding: 0.75em 2em;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+    .hours-section {
+      background-color: #333;
+      color: white;
       padding: 2em;
       text-align: center;
     }
-    .contact-form {
+    .contact-info {
       display: flex;
-      flex-direction: column;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 960px;
+      margin: auto;
+      color: #333;
+      padding: 2em 1em;
     }
-    .contact-form input,
-    .contact-form textarea {
-      margin-bottom: 1em;
-      padding: 0.75em;
-      font-size: 1em;
+    .contact-info div {
+      flex: 1;
+      margin: 1em;
     }
-    .contact-form button {
-      background: #dc143c;
-      color: white;
-      padding: 0.75em;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
+    .contact-info h4 {
+      font-size: 1.3em;
+      margin-bottom: 0.5em;
     }
-    footer {
-      text-align: center;
-      background: #111;
-      color: white;
-      padding: 1em;
+    .contact-info p {
+      margin: 0.3em 0;
+    }
+    .contact-info p span {
+      color: #dc143c;
+    }
+    .contact-info strong {
+      font-weight: 700;
+    }
+
+    .about-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2em;
+      text-align: right;
+    }
+    .about-section img {
+      width: 48%;
+      height: auto;
+    }
+    .about-section .text {
+      width: 48%;
+    }
+    .about-section .text h2 {
+      color: #dc143c;
+      font-size: 2em;
+    }
+    .about-section .text h3 {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
+    .about-section .text p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+   .instagram-link img {
+      width: 24px;
+      height: 24px;
+      filter: invert(100%);
+      transition: transform 0.2s ease;
+    }
+    .instagram-link:hover img {
+      transform: scale(1.2);
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>The Buff Stop</h1>
-    <p>Premium Car Detailing Services</p>
+    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
+    <nav>
+      <ul>
+        <li><a href="#">HOME</a></li>
+        <li onclick="this.classList.toggle('show')">
+          <button type="button">SERVICES</button>
+          <ul class="dropdown-menu">
+            <li><a href="#services">List of Services</a></li>
+            <li><a href="#booking">Book an Appointment</a></li>
+          </ul>
+        </li>
+        <li><a href="#gallery">GALLERY</a></li>
+        <li><a href="#contact">CONTACT US</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#booking">Booking</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <main>
+    <section class="banner">
+      <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/buffstop%20banner%20v2.png" alt="Buff Stop Banner">
+      <div class="banner-text">
+        <h1>Premium Car Detailing Services</h1>
+        <p>Revive your vehicle's shine with our expert detailing.</p>
+        <a href="#booking">Book Your Detail Now</a>
+      </div>
+    </section>
 
-  <section id="services" class="section">
-    <h2>Our Services</h2>
-    <p>We offer full interior and exterior car detailing, engine bay cleaning, ceramic coatings, and more. Your vehicle will leave our shop spotless and protected.</p>
-  </section>
+    <section class="about-section">
+      <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/pre-buffstop%20treatment.jpg" alt="Pre Buff Stop Treatment">
+      <div class="text">
+        <h2>About TheBuffStop</h2>
+        <h3>Our Mission</h3>
+        <p>At TheBuffStop, we are dedicated to providing top-notch car detailing services that exceed your expectations. Our mission is to ensure every vehicle shines like new, using eco-friendly products and advanced techniques.</p>
+      </div>
+    </section>
 
-  <section id="booking" class="section banner">
-    <h2>Book Your Appointment</h2>
-    <p>Call us at (506) 639-3577 or use our online form below.</p>
-  </section>
+    <section class="gallery-section" id="gallery">>
+      <h2 style="color: #dc143c; text-align: center;">Transformations that shine: Our detailing gallery</h2>
+      <div class="gallery">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2b.jpg" alt="Before 2">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3b.jpg" alt="Before 3">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4b.jpg" alt="Before 4">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5b.jpg" alt="Before 5">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2a.jpg" alt="After 2">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3a.jpg" alt="After 3">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4a.jpg" alt="After 4">
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5a.jpg" alt="After 5">
+      </div>
+    </section>
 
-  <section id="contact" class="section">
-    <h2>Contact Us</h2>
-    <form class="contact-form" action="https://formspree.io/f/YOUR_ID" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+    <section class="contact-section" id="contact">
+      <h2>Contact Us</h2>
+      <p>Have any questions? Give us a message!</p>
+      <form>
+        <input type="text" placeholder="Name">
+        <input type="email" placeholder="Email*">
+        <textarea rows="5" placeholder="Message"></textarea>
+        <div class="attachment-row">
+          <span>Attach Files</span>
+          <span style="color:#666">Attachments (0)</span>
+        </div>
+        <button type="submit">SEND</button>
+      </form>
+    </section>
 
-  <footer>
-    <p>&copy; 2025 The Buff Stop. All rights reserved.</p>
-  </footer>
+    <section class="contact-info">
+      <div>
+        <h4>TheBuffStop</h4>
+        <p>Evergreen Street, Fredericton, NB E3B 6R7, Canada</p>
+        <p><strong>Majid Debly</strong>: <span>506-343-5927</span></p>
+        <p><a href="mailto:majid@thebuffstop.com">majid@thebuffstop.com</a></p>
+        <p><strong>Eric Johnson</strong>: <span>506-653-7573</span></p>
+        <p><a href="mailto:eric@thebuffstop.com">eric@thebuffstop.com</a></p>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <p>Mon – Fri: 09:00 a.m. – 05:00 p.m.</p>
+        <p>Sat: Closed</p>
+        <p><strong>Sun: Closed</strong></p>
+      </div>
+    </section>
+
+    <footer>
+     <div class="footer-content">
+      <p>&copy; 2025 TheBuffStop - All Rights Reserved.</p>
+       <a href="https://www.instagram.com/thebuffstop/" target="_blank" class="instagram-link" aria-label="Instagram">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram Icon">
+    </a>
+  </div>
+</footer>
+  </main>
 </body>
 </html>
