@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="Buff stop logo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Appointment | The Buff Stop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #fff;
+      color: #111;
+      padding: 2em;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #dc143c;
+    }
+    form {
+      max-width: 600px;
+      margin: 2em auto;
+      padding: 2em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1em;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 0.8em;
+      margin-top: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    button {
+      background-color: #dc143c;
+      color: white;
+      border: none;
+      margin-top: 1.5em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #b01030;
+    }
+    #addons-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5em 1em;
+      margin-top: 1em;
+    }
+    #addons-container label {
+      font-weight: normal;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 0.6em 0.8em;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+      gap: 1em;
+    }
+    #addons-container label:hover {
+      background: #f0f0f0;
+    }
+    #addons-container input[type="checkbox"] {
+      justify-self: end;
+      transform: scale(1.2);
+    }
+    #addons-wrapper {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: all 0.4s ease-in-out;
+    }
+    #addons-wrapper.show {
+      max-height: 1000px;
+      opacity: 1;
+    }
+    #confirmation {
+      max-width: 600px;
+      margin: 1em auto;
+      padding: 1em;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+    }
+    header img {
+      height: 40px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 1em;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      background: transparent;
+      color: black;
+      text-decoration: none;
+      padding: 0.5em 1em;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    nav ul li a:hover {
+      background-color: #dc143c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="Buff stop logo.png" alt="Buffstop Logo">
+    <nav>
+      <ul>
+        <li><a href="main.html">Home</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="booking.html">Book Now</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div style="margin-top: 6em;"></div>
+
+  <h2>The Buff Stop - Premium Car Detailing</h2>
+  <div id="confirmation">Thank you! Your booking request has been sent successfully.</div>
+  <form id="booking-form" action="https://formspree.io/f/mkgbqogq" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="Name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="_replyto" required>
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="Phone" required>
+
+    <label for="year">Vehicle Year</label>
+    <input type="text" id="year" name="Year" required>
+
+    <label for="make">Vehicle Make</label>
+    <input type="text" id="make" name="Make" required>
+
+    <label for="model">Vehicle Model</label>
+    <input type="text" id="model" name="Model" required>
+
+    <label for="package">Select Package</label>
+    <select id="package" name="Package" required>
+      <option value="Basic Interior + Exterior">Basic Interior + Exterior ($240)</option>
+      <option value="Basic Interior">Basic Interior ($140)</option>
+      <option value="Basic Exterior">Basic Exterior ($125)</option>
+      <option value="Full Service Interior">Full Service Interior ($260)</option>
+      <option value="Full Service Exterior">Full Service Exterior ($275)</option>
+      <option value="Full Service Int + Ext">Full Service Int + Ext ($495)</option>
+      <option value="Car Presale Package">Car Presale Package ($575)</option>
+    </select>
+
+    <label for="preferred-date">Preferred Date</label>
+    <input type="date" id="preferred-date" name="Date" required>
+
+    <label for="notes">Additional Notes</label>
+    <textarea id="notes" name="Notes" rows="4" placeholder="Anything else we should know?"></textarea>
+
+    <label><button type="button" id="toggle-addons" style="margin-bottom: 0.5em;">Show Add-Ons</button></label>
+    <div id="addons-wrapper">
+      <div id="addons-container"></div>
+    </div>
+
+    <div style="margin-top: 1.5em; font-weight: bold;">Estimated Total: $<span id="estimated-total">0.00</span></div>
+
+    <button type="submit">Submit Booking Request</button>
+  </form>
+
+<script>
+const form = document.getElementById('booking-form');
+const confirmation = document.getElementById('confirmation');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(form);
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  }).then(response => {
+    if (response.ok) {
+      form.reset();
+      confirmation.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      alert('There was a problem sending your request. Please try again.');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
