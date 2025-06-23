@@ -274,83 +274,78 @@
       "Car Presale Package": ["Pet Hair Removal", "Clay Bar Treatment", "Engine Bay Detail"]
     };
 
-    function updateAddons(packageName) {
+    function updateAddons() {
       addonsContainer.innerHTML = "";
       addonList.forEach(addon => {
-        if (includedAddons[packageName]?.includes(addon.name)) return;
+        if (includedAddons[packageSelect.value]?.includes(addon.name)) return;
         const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'addons';
-        checkbox.value = addon.name;
-        checkbox.dataset.price = addon.price;
-        label.appendChild(checkbox);
-        label.append(`${addon.name} ($${addon.price})`);
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.name = 'addons';
+        cb.value = addon.name;
+        cb.dataset.price = addon.price;
+        label.append(cb, ` ${addon.name} ($${addon.price})`);
         addonsContainer.appendChild(label);
       });
     }
 
-    toggleAddonsBtn.addEventListener('click', () => {
-      addonsWrapper.classList.toggle('show');
-    });
-
-    function calculateTotal() {
+function calculateTotal() {
       let total = basePrices[packageSelect.value] || 0;
-      const checkedAddons = addonsContainer.querySelectorAll('input[type="checkbox"]:checked');
-      checkedAddons.forEach(cb => {
+      addonsContainer.querySelectorAll('input[name="addons"]:checked').forEach(cb => {
         total += parseFloat(cb.dataset.price);
       });
-      estimatedTotal.textContent = total.toFixed(2);
+      estimatedTotalEl.textContent = total.toFixed(2);
     }
 
     packageSelect.addEventListener('change', () => {
-      updateAddons(packageSelect.value);
+      updateAddons();
       calculateTotal();
     });
-
     addonsContainer.addEventListener('change', calculateTotal);
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
+form.addEventListener('submit', e => {
+      e.preventDefault();
+      calculateTotal();
 
-  calculateTotal();
+      const total = estimatedTotalEl.textContent;
+      const addonsSelected = Array.from(addonsContainer.querySelectorAll('input[name="addons"]:checked'))
+        .map(cb => cb.value);
 
-  const total = estimatedTotal.textContent;
-  const checkedAddons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
-  const addonsSummary = checkedAddons.length ? `\n\nAdd-Ons Selected: ${checkedAddons.join(', ')}` : "";
-  const originalNotes = notesField.value.trim();
-  const updatedNotes = `${originalNotes}${addonsSummary}\n\nEstimated Total: $${total}`;
-  notesField.value = updatedNotes;
+      const addonsText = addonsSelected.length
+        ? `\n\nAdd‑Ons Selected: ${addonsSelected.join(', ')}`
+        : "";
 
-  const formData = new FormData(form);
+      notesField.value = (notesField.value.trim() || "") + addonsText + `\n\nEstimated Total: $${total}`;
+     
+ // Logging
+      console.log('Package:', packageSelect.value);
+      console.log('Add-Ons:', addonsSelected);
+      console.log('Total:', total);
+      console.log('Notes field:', notesField.value);
 
-  console.log("Selected package:", packageSelect.value);
-  console.log("Checked Addons:", checkedAddons);
-  console.log("Estimated Total:", total);
+  fetch(form.action, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      })
+      .then(r => {
+        console.log('Formspark status:', r.status);
+        if (r.ok) {
+          form.reset();
+          alert('Submitted — thank you!');
+        } else {
+          alert('Submission failed: ' + r.status);
+        }
+      })
+      .catch(err => {
+        console.error('Network/CORS error', err);
+        alert('Network error submitting form.');
+      });
+    });
 
-  fetch(form.getAttribute('action'), {
-    method: 'POST',
-    mode: 'cors',
-    headers: { 'Accept': 'application/json' },
-    body: formData
-  })
-  .then(response => {
-    console.log('Formspark status:', response.status);
-    if (response.ok) {
-      form.reset();
-      confirmation.style.display = 'block';
-      window.scrollTo({ top: 0 });
-    } else {
-      alert('Submission failed. Try again.');
-    }
-  })
-  .catch(err => {
-    console.error('Network / CORS error:', err);
-    alert('Unable to submit form – network or CORS issue.');
-  });
-});
-
-
+    updateAddons();
+    calculateTotal();
   </script>
 </body>
 </html>
