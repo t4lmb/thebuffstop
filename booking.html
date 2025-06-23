@@ -312,35 +312,41 @@
     addonsContainer.addEventListener('change', calculateTotal);
 
     form.addEventListener('submit', function(e) {
-      e.preventDefault();
+  e.preventDefault();
 
-      const total = estimatedTotal.textContent;
-      const checkedAddons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
-      const addonsSummary = checkedAddons.length ? `\n\nAdd-Ons Selected: ${checkedAddons.join(', ')}` : "";
-      const originalNotes = notesField.value.trim();
-      const updatedNotes = `${originalNotes}${addonsSummary}\n\nEstimated Total: $${total}`;
-      notesField.value = updatedNotes;
-      hiddenTotal.value = `$${total}`;
+  const total = estimatedTotal.textContent;
+  const checkedAddons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
+  const addonsSummary = checkedAddons.length ? `\n\nAdd-Ons Selected: ${checkedAddons.join(', ')}` : "";
+  const originalNotes = notesField.value.trim();
+  const updatedNotes = `${originalNotes}${addonsSummary}\n\nEstimated Total: $${total}`;
+  notesField.value = updatedNotes;
+  hiddenTotal.value = `$${total}`;
 
-      const formData = new FormData(form);
+  const formData = new FormData(form);
+  formData.append('Estimated_Total', `$${total}`);
 
-      fetch(form.getAttribute('action'), {
-        method: 'POST',
-        body: formData
-      }).then(response => {
-        console.log("Formspark response status:", response.status);
-        if (response.ok) {
-          form.reset();
-          confirmation.style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          alert('There was a problem sending your request. Please try again.');
-        }
-      });
-    });
-
-    updateAddons(packageSelect.value);
-    calculateTotal();
+  console.log('Submitting to Formspark...');
+  fetch(form.getAttribute('action'), {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Accept': 'application/json' },
+    body: formData
+  })
+  .then(response => {
+    console.log('Formspark status:', response.status);
+    if (response.ok) {
+      form.reset();
+      confirmation.style.display = 'block';
+      window.scrollTo({ top: 0 });
+    } else {
+      alert('Submission failed. Try again.');
+    }
+  })
+  .catch(err => {
+    console.error('Network / CORS error:', err);
+    alert('Unable to submit form – network or CORS issue.');
+  });
+});
   </script>
 </body>
 </html>
