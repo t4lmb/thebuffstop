@@ -311,7 +311,7 @@
 
     addonsContainer.addEventListener('change', calculateTotal);
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
   e.preventDefault();
 
   const total = estimatedTotal.textContent;
@@ -319,33 +319,30 @@
   const addonsSummary = checkedAddons.length ? `\n\nAdd-Ons Selected: ${checkedAddons.join(', ')}` : "";
   const originalNotes = notesField.value.trim();
   const updatedNotes = `${originalNotes}${addonsSummary}\n\nEstimated Total: $${total}`;
-  notesField.value = updatedNotes;
-  hiddenTotal.value = `$${total}`;
+  notesField.value = updatedNotes; 
 
-  const formData = new FormData(form);
-  formData.append('Estimated_Total', `$${total}`);
+  const formData = new FormData(form);.
 
-  console.log('Submitting to Formspark...');
   fetch(form.getAttribute('action'), {
     method: 'POST',
     mode: 'cors',
     headers: { 'Accept': 'application/json' },
     body: formData
   })
-  .then(response => {
-    console.log('Formspark status:', response.status);
-    if (response.ok) {
-      form.reset();
-      confirmation.style.display = 'block';
-      window.scrollTo({ top: 0 });
-    } else {
-      alert('Submission failed. Try again.');
-    }
-  })
-  .catch(err => {
-    console.error('Network / CORS error:', err);
-    alert('Unable to submit form – network or CORS issue.');
-  });
+    .then(response => {
+      console.log('Formspark status:', response.status);
+      if (response.ok) {
+        form.reset();
+        confirmation.style.display = 'block';
+        window.scrollTo({ top: 0 });
+      } else {
+        alert('Submission failed. Try again.');
+      }
+    })
+    .catch(err => {
+      console.error('Network / CORS error:', err);
+      alert('Unable to submit form – network or CORS issue.');
+    });
 });
   </script>
 </body>
