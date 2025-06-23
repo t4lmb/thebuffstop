@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services | The Buff Stop</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+        html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #111;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+      padding: 1em 2em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 50px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      position: relative;
+        }
+    nav ul li a,
+    nav ul li button {
+      background: none;
+      border: none;
+      color: #333;  display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0.5em 1em;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1em;
+      font-weight: 1000;
+      text-transform: uppercase;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    nav ul li a:hover,
+    nav ul li button:hover {
+      background: #dc143c;
+      color: white;
+    }
+
+.dropdown-menu {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 0.5em 1em;
+      list-style: none;
+      min-width: 180px;
+    }
+    nav ul li.show .dropdown-menu {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 0.5em 0;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      font-size: 0.85em;
+    }
+    .dropdown-menu li a:hover {
+      color: #dc143c;
+    }
+
+.banner {
+      display: flex;
+      background-color: black;
+      color: white;
+      align-items: center;
+      justify-content: ceter;
+      padding-right: 2em;
+    }
+    .banner img {
+      max-width: 50%;
+      height: auto;
+    }
+    .banner-text {
+      text-align: right;
+      max-width: 100%;
+      margin-left: 2em;
+    }
+    .banner-text h1 {
+      font-size: 2em;
+      color: white;
+    }
+    .banner-text p {
+      font-size: 1.1em;
+      color: #ccc;
+    }
+    .banner-text a {
+      display: inline-block;
+      margin-top: 1em;
+      background-color: #e5093f;
+      color: white;
+      padding: 0.75em 1.5em;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+    main {
+      max-width: 1000px;
+      margin: 2em auto;
+      padding: 1em;
+    }
+    h1 {
+      text-align: center;
+      color: #dc143c;
+    }
+    h3 {
+      text-align: center;
+      color: #000000;
+    }
+    .pdf-download {
+      text-align: center;
+      margin-bottom: 2em;
+    }
+    .pdf-download a {
+      background-color: #dc143c;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75em 1.5em;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .pdf-download a:hover {
+      background-color: #b01030;
+    }
+    .package-section {
+      margin-bottom: 3em;
+    }
+    .package-section h2 {
+      color: #dc143c;
+      border-bottom: 2px solid #dc143c;
+      padding-bottom: 0.3em;
+      margin-bottom: 1em;
+    }
+    .package-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .package-table th, .package-table td {
+      border: 1px solid #ccc;
+      padding: 0.75em;
+      text-align: center;
+    }
+    .package-table th {
+      background-color: #dc143c;
+      color: white;
+    }
+    .info-bubble {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 2000;
+      max-width: 600px;
+      display: none;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      z-index: 1500;
+      display: none;
+    }
+    .close-btn {
+      position: absolute;
+      top: 0.5em;
+      right: 0.8em;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      color: #dc143c;
+    }
+    .clickable {
+      cursor: pointer;
+      color: #dc143c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+  <div class="info-bubble" id="infoBubble">
+    <span class="close-btn" onclick="closeBubble()">&times;</span>
+    <div id="bubbleContent"></div>
+  </div>
+
+  <header>
+    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
+    <nav>
+      <ul>
+        <li><a href="#">HOME</a></li>
+        <li onclick="this.classList.toggle('show')">
+          <button type="button">SERVICES</button>
+          <ul class="dropdown-menu">
+            <li><a href="#services">List of Services</a></li>
+            <li><a href="#booking">Book an Appointment</a></li>
+          </ul>
+        </li>
+        <li><a href="#gallery">GALLERY</a></li>
+        <li><a href="#contact">CONTACT US</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Packages Breakdown</h1>
+    <h3>Click on a service to view more information!</h3>
+
+    <div class="package-section">
+      <h2>Full Service Interior</h2>
+      <table class="package-table">
+        <thead><tr><th>Service</th><th>Sedan</th><th>SUV</th><th>Truck</th><th>Van</th></tr></thead>
+        <tbody>
+          <tr><td><span class="clickable" onclick="showBubble('basicInterior')">Basic Interior</span></td><td>$140</td><td>$185</td><td>$200</td><td>$230</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('interiorSteam')">Interior Steam Sanitization</span></td><td>$30</td><td>$40</td><td>$50</td><td>$60</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('carpetShampoo')">Carpet/Seat Shampooing</span></td><td>$50</td><td>$75</td><td>$100</td><td>$100</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('interiorDressing')">Interior Dressing + Protectant</span></td><td>$65</td><td>$75</td><td>$85</td><td>$95</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('windowDefog')">Interior Window Defog Application</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('ozoneTreatment')">Ozone Deodorizer Treatment</span></td><td>$125</td><td>$125</td><td>$125</td><td>$125</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td>$30</td><td>$30</td><td>$30</td><td>$30</td></tr>
+        
+        </tbody>
+      </table>
+    </div>
+
+    <div class="package-section">
+      <h2>Full Service Exterior</h2>
+      <table class="package-table">
+        <thead><tr><th>Service</th><th>Sedan</th><th>SUV</th><th>Truck</th><th>Van</th></tr></thead>
+        <tbody>
+          <tr><td><span class="clickable" onclick="showBubble('basicExterior')">Basic Exterior</span></td><td>$125</td><td>$140</td><td>$155</td><td>$165</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('clayBar')">Clay Bar Decontamination</span></td><td>$60</td><td>$70</td><td>$80</td><td>$90</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('polish')">One Step Polish</span></td><td>$125</td><td>$150</td><td>$175</td><td>$200</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('ceramicSealant')">Ceramic Sealant Topper</span></td><td>$75</td><td>$85</td><td>$95</td><td>$105</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('trimRestoration')">Trim Restoration</span></td><td>$45</td><td>$55</td><td>$65</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td>$30</td><td>$30</td><td>$30</td><td>$30</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="package-section">
+      <h2>À La Carte Services</h2>
+      <table class="package-table">
+        <thead><tr><th>Service</th><th>Flat Rate</th></tr></thead>
+        <tbody>
+          <tr><td><span class="clickable" onclick="showBubble('engineBay')">Engine Bay Cleaning</span></td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('petHair')">Pet Hair Removal</span></td><td>$60</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('headlight')">Headlight Restoration</span></td><td>$50</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('odour')">Odour Elimination Treatment</span></td><td>$125</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pdf-download">
+      <a href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Package%20Breakdowns.pdf" download>Download PDF</a>
+    </div>
+  </main>
+
+<script>
+  const bubbleText = {
+    basicInterior: `<h3>Basic Interior</h3><p><strong>Our Basic Interior Package offers a full reset to your car’s cabin.</strong></p><ul><li>Vacuum carpets, seats, trunk/cargo</li><li>Wipe down of dash, door panels, consoles</li><li>Interior windows cleaned</li><li>Floor mats scrubbed and extracted</li></ul><p><strong>Why it works:</strong> Refreshes surfaces, removes loose dirt/debris, and keeps the cabin inviting.</p><p><strong>Perfect for:</strong> Routine cleans, leased vehicle upkeep, vehicles with low/moderate interior soil.</p>`,
+
+    interiorSteam: `<h3>Interior Steam Sanitization</h3><p>High-temperature steam cleans and disinfects all hard surfaces and air vents. Eliminates bacteria, allergens, and odors.</p><p><strong>Ideal for:</strong> allergy sufferers, families with children or pets, and post-winter deep cleans.</p>`,
+
+    carpetShampoo: `<h3>Carpet/Seat Shampooing</h3><p>Hot water extraction lifts embedded dirt and stains from carpets and fabric seats. Restores freshness and texture.</p><p><strong>Perfect for:</strong> spilled drinks, pet messes, and winter salt residue.</p>`,
+
+    interiorDressing: `<h3>Interior Dressing + Protectant</h3><p>UV-protectant applied to dashboards, panels, and trim restores shine and helps prevent cracking and fading.</p><p><strong>Best for:</strong> prolonging the life of plastic/vinyl surfaces in sunny climates.</p>`,
+
+    windowDefog: `<h3>Interior Window Defog Application</h3><p>Anti-fog solution applied to inside glass to reduce condensation and fog buildup.</p><p><strong>Helpful for:</strong> winter months or humid climates where fogging is common.</p>`,
+
+    ozoneTreatment: `<h3>Ozone Deodorizer Treatment</h3><p>Powerful ozone gas neutralizes deep-seated odors including smoke, mold, food, and pet smells. Applied post-cleaning.</p><p><strong>Ideal for:</strong> pre-sale prep or strong unwanted odors.</p>`,
+
+    basicExterior: `<h3>Basic Exterior</h3><p><strong>Our Basic Exterior Detail is the perfect way to maintain your vehicle’s shine and protection without the time or cost of a full correction.</strong></p><ul><li>Pre-Foam Soak – Loosens dirt and grime safely</li><li>Gentle Hand Wash – Microfiber mitts and pH-balanced soap</li><li>Sealant Application – Boosts shine and paint protection</li><li>Hand Drying – Scratch-free microfiber finish</li><li>Tire Cleaning & Shine</li><li>Streak-Free Window Cleaning</li></ul><p><strong>Why it works:</strong> Enhances gloss, protects from grime/UV, great between deep details.</p><p><strong>Perfect for:</strong> Monthly upkeep, post-road trip refresh.</p>`,
+
+    clayBar: `<h3>Clay Bar Decontamination</h3><p>Removes embedded contaminants like tar, tree sap, and industrial fallout. Restores smooth paint feel before polishing or sealing.</p>`,
+
+    polish: `<h3>One Step Polish</h3><p>Machine polish improves gloss, removes light swirls, oxidation, and restores clarity. Finished with a sealant.</p><p><strong>Great for:</strong> neglected paint, pre-sale prep, seasonal shine.</p>`,
+
+    ceramicSealant: `<h3>Ceramic Sealant Topper</h3><p>SiO2-based spray applied for hydrophobic protection and shine. Extends wax/coating life.</p><p><strong>Lasts:</strong> 3-6 months.</p>`,
+
+    trimRestoration: `<h3>Trim Restoration</h3><p>Restores faded plastic trim to a dark factory finish. Durable coating helps repel water and UV rays.</p><p><strong>Best for:</strong> aging exterior plastics on bumpers, mirrors, and window seals.</p>`,
+
+    engineBay: `<h3>Engine Bay Detailing</h3><p>Degrease and dress engine components safely. Helps with resale and maintenance visibility.</p>`,
+
+    petHair: `<h3>Pet Hair Removal</h3><p>Deep brushing and vacuuming removes stubborn embedded pet hair.</p><p><strong>Recommended:</strong> for vehicles with heavy shedding or dander.</p>`,
+
+    headlight: `<h3>Headlight Restoration</h3><p>Multi-step sanding, polishing, and sealing process restores cloudy headlights to clarity.</p><p><strong>Improves:</strong> nighttime visibility and appearance.</p>`,
+
+    odour: `<h3>Odour Elimination Treatment</h3><p>Combined shampooing, steam cleaning, and ozone neutralization for strong odors like smoke, mildew, or food spills.</p>`,
+
+    deepWheel: `<h3>Deep Wheel Cleaning</h3><p>Your wheels take the brunt of the road brake dust, road grime, salt, and grease all build up fast. Our <strong>Deep Wheel Cleaning</strong> service goes beyond a basic rinse to safely break down and remove stubborn buildup, leaving your rims, lug nuts, and barrels spotless. </p>`
+  };
+
+  function showBubble(key) {
+    document.getElementById('bubbleContent').innerHTML = bubbleText[key] || '<p>No info available.</p>';
+    document.getElementById('infoBubble').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+  function closeBubble() {
+    document.getElementById('infoBubble').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
