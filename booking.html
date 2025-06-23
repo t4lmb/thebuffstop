@@ -196,7 +196,7 @@
   <main>
     <h2>The Buff Stop - Premium Car Detailing</h2>
     <div id="confirmation">Thank you! Your booking request has been sent successfully.</div>
-    <form id="booking-form" action="https://formspree.io/f/mkgbqogq" method="POST">
+    <form id="booking-form" action="https://submit-form.com/tIIG4JnBf" method="POST">
       <label for="name">Name</label>
       <input type="text" id="name" name="Name" required>
       <label for="email">Email</label>
@@ -242,6 +242,7 @@
     const packageSelect = document.getElementById('package');
     const preferredDateInput = document.getElementById('preferred-date');
     const hiddenTotal = document.getElementById('hidden-total');
+    const notesField = document.getElementById('notes');
 
     const today = new Date().toISOString().split('T')[0];
     preferredDateInput.setAttribute('min', today);
@@ -312,21 +313,22 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const formData = new FormData(form);
-      const total = estimatedTotal.textContent;
-      hiddenTotal.value = `$${total}`;
-      formData.append('Estimated_Total', `$${total}`);
 
-      console.log("Form data entries:");
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      const total = estimatedTotal.textContent;
+      const checkedAddons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
+      const addonsSummary = checkedAddons.length ? `\n\nAdd-Ons Selected: ${checkedAddons.join(', ')}` : "";
+      const originalNotes = notesField.value.trim();
+      const updatedNotes = `${originalNotes}${addonsSummary}\n\nEstimated Total: $${total}`;
+      notesField.value = updatedNotes;
+      hiddenTotal.value = `$${total}`;
+
+      const formData = new FormData(form);
 
       fetch(form.getAttribute('action'), {
         method: 'POST',
         body: formData
       }).then(response => {
-        console.log("Formspree response status:", response.status);
+        console.log("Formspark response status:", response.status);
         if (response.ok) {
           form.reset();
           confirmation.style.display = 'block';
