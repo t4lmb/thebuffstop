@@ -7,9 +7,7 @@
   <title>Book Your Appointment | The Buff Stop</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
@@ -30,9 +28,7 @@
       align-items: center;
       padding: 1em 2em;
     }
-    header img {
-      height: 50px;
-    }
+    header img { height: 50px; }
     nav ul {
       list-style: none;
       display: flex;
@@ -43,9 +39,7 @@
       margin: 0;
       padding: 0;
     }
-    nav ul li {
-      position: relative;
-    }
+    nav ul li { position: relative; }
     nav ul li a,
     nav ul li button {
       background: none;
@@ -92,9 +86,7 @@
       transition: color 0.2s ease;
       font-size: 0.85em;
     }
-    .dropdown-menu li a:hover {
-      color: #dc143c;
-    }
+    .dropdown-menu li a:hover { color: #dc143c; }
     main {
       margin-top: 100px;
       padding: 2em 1em;
@@ -132,9 +124,7 @@
       margin-top: 1.5em;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #b01030;
-    }
+    button:hover { background-color: #b01030; }
     #addons-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -157,9 +147,7 @@
       box-sizing: border-box;
       gap: 1em;
     }
-    #addons-container label:hover {
-      background: #f0f0f0;
-    }
+    #addons-container label:hover { background: #f0f0f0; }
     #addons-container input[type="checkbox"] {
       justify-self: end;
       transform: scale(1.2);
@@ -194,40 +182,33 @@
       <ul>
         <li><a href="index.html">HOME</a></li>
         <li class="dropdown">
-  <a href="#" class="dropdown-toggle" onclick="event.preventDefault(); this.parentElement.classList.toggle('show');">SERVICES</a>
-  <ul class="dropdown-menu">
-    <li><a href="services.html">List of Services</a></li>
-    <li><a href="booking.html">Book an Appointment</a></li>
-  </ul>
-</li>
+          <a href="#" class="dropdown-toggle" onclick="event.preventDefault(); this.parentElement.classList.toggle('show');">SERVICES</a>
+          <ul class="dropdown-menu">
+            <li><a href="index.html#services">List of Services</a></li>
+            <li><a href="booking.html">Book an Appointment</a></li>
+          </ul>
+        </li>
         <li><a href="index.html#gallery">GALLERY</a></li>
         <li><a href="index.html#contact">CONTACT US</a></li>
       </ul>
     </nav>
   </header>
-
   <main>
     <h2>The Buff Stop - Premium Car Detailing</h2>
     <div id="confirmation">Thank you! Your booking request has been sent successfully.</div>
     <form id="booking-form" action="https://formspree.io/f/mkgbqogq" method="POST">
       <label for="name">Name</label>
       <input type="text" id="name" name="Name" required>
-
       <label for="email">Email</label>
       <input type="email" id="email" name="_replyto" required>
-
       <label for="phone">Phone Number</label>
       <input type="tel" id="phone" name="Phone" required>
-
       <label for="year">Vehicle Year</label>
       <input type="text" id="year" name="Year" required>
-
       <label for="make">Vehicle Make</label>
       <input type="text" id="make" name="Make" required>
-
       <label for="model">Vehicle Model</label>
       <input type="text" id="model" name="Model" required>
-      
       <label for="package">Select Package</label>
       <select id="package" name="Package" required>
         <option value="Basic Interior + Exterior">Basic Interior + Exterior ($240)</option>
@@ -238,24 +219,19 @@
         <option value="Full Service Int + Ext">Full Service Int + Ext ($495)</option>
         <option value="Car Presale Package">Car Presale Package ($575)</option>
       </select>
-
       <label for="preferred-date">Preferred Date</label>
       <input type="date" id="preferred-date" name="Date" required>
-
       <label for="notes">Additional Notes</label>
       <textarea id="notes" name="Notes" rows="4" placeholder="Anything else we should know?"></textarea>
-
       <label><button type="button" id="toggle-addons" style="margin-bottom: 0.5em;">Show Add-Ons</button></label>
       <div id="addons-wrapper">
         <div id="addons-container"></div>
       </div>
-
       <div style="margin-top: 1.5em; font-weight: bold;">Estimated Total: $<span id="estimated-total">0.00</span></div>
-
+      <input type="hidden" name="Estimated_Total" id="hidden-total">
       <button type="submit">Submit Booking Request</button>
     </form>
   </main>
-
   <script>
     const form = document.getElementById('booking-form');
     const confirmation = document.getElementById('confirmation');
@@ -264,6 +240,11 @@
     const addonsContainer = document.getElementById('addons-container');
     const estimatedTotal = document.getElementById('estimated-total');
     const packageSelect = document.getElementById('package');
+    const preferredDateInput = document.getElementById('preferred-date');
+    const hiddenTotal = document.getElementById('hidden-total');
+
+    const today = new Date().toISOString().split('T')[0];
+    preferredDateInput.setAttribute('min', today);
 
     const basePrices = {
       "Basic Interior + Exterior": 240,
@@ -332,13 +313,20 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(form);
-        const total = estimatedTotal.textContent;
-        formData.append('Estimated Total', `$${total}`);
-      fetch(form.action, {
+      const total = estimatedTotal.textContent;
+      hiddenTotal.value = `$${total}`;
+      formData.append('Estimated_Total', `$${total}`);
+
+      console.log("Form data entries:");
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      fetch(form.getAttribute('action'), {
         method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
+        body: formData
       }).then(response => {
+        console.log("Formspree response status:", response.status);
         if (response.ok) {
           form.reset();
           confirmation.style.display = 'block';
