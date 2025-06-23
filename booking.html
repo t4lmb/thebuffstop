@@ -227,7 +227,7 @@
 
       <label for="model">Vehicle Model</label>
       <input type="text" id="model" name="Model" required>
-
+      
       <label for="package">Select Package</label>
       <select id="package" name="Package" required>
         <option value="Basic Interior + Exterior">Basic Interior + Exterior ($240)</option>
@@ -259,10 +259,81 @@
   <script>
     const form = document.getElementById('booking-form');
     const confirmation = document.getElementById('confirmation');
+    const toggleAddonsBtn = document.getElementById('toggle-addons');
+    const addonsWrapper = document.getElementById('addons-wrapper');
+    const addonsContainer = document.getElementById('addons-container');
+    const estimatedTotal = document.getElementById('estimated-total');
+    const packageSelect = document.getElementById('package');
+
+    const basePrices = {
+      "Basic Interior + Exterior": 240,
+      "Basic Interior": 140,
+      "Basic Exterior": 125,
+      "Full Service Interior": 260,
+      "Full Service Exterior": 275,
+      "Full Service Int + Ext": 495,
+      "Car Presale Package": 575
+    };
+
+    const addonList = [
+      { name: "Engine Bay Detail", price: 50 },
+      { name: "Pet Hair Removal", price: 40 },
+      { name: "Salt Stain Removal", price: 30 },
+      { name: "Clay Bar Treatment", price: 35 },
+      { name: "Headlight Restoration", price: 60 },
+      { name: "Ceramic Spray Sealant", price: 45 },
+      { name: "Plastic Trim Restoration", price: 25 },
+      { name: "Interior Scent Bomb", price: 10 }
+    ];
+
+    const includedAddons = {
+      "Full Service Interior": ["Pet Hair Removal"],
+      "Full Service Exterior": ["Clay Bar Treatment"],
+      "Full Service Int + Ext": ["Pet Hair Removal", "Clay Bar Treatment"],
+      "Car Presale Package": ["Pet Hair Removal", "Clay Bar Treatment", "Engine Bay Detail"]
+    };
+
+    function updateAddons(packageName) {
+      addonsContainer.innerHTML = "";
+      addonList.forEach(addon => {
+        if (includedAddons[packageName]?.includes(addon.name)) return;
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'addons';
+        checkbox.value = addon.name;
+        checkbox.dataset.price = addon.price;
+        label.appendChild(checkbox);
+        label.append(`${addon.name} ($${addon.price})`);
+        addonsContainer.appendChild(label);
+      });
+    }
+
+    toggleAddonsBtn.addEventListener('click', () => {
+      addonsWrapper.classList.toggle('show');
+    });
+
+    function calculateTotal() {
+      let total = basePrices[packageSelect.value] || 0;
+      const checkedAddons = addonsContainer.querySelectorAll('input[type="checkbox"]:checked');
+      checkedAddons.forEach(cb => {
+        total += parseFloat(cb.dataset.price);
+      });
+      estimatedTotal.textContent = total.toFixed(2);
+    }
+
+    packageSelect.addEventListener('change', () => {
+      updateAddons(packageSelect.value);
+      calculateTotal();
+    });
+
+    addonsContainer.addEventListener('change', calculateTotal);
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const formData = new FormData(form);
+        const total = estimatedTotal.textContent;
+        formData.append('Estimated Total', `$${total}`);
       fetch(form.action, {
         method: 'POST',
         body: formData,
@@ -277,6 +348,9 @@
         }
       });
     });
+
+    updateAddons(packageSelect.value);
+    calculateTotal();
   </script>
 </body>
 </html>
