@@ -1,2 +1,0 @@
-# thebuffstop
-Thebuffstop website
