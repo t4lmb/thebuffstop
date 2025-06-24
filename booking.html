@@ -1,108 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Your Appointment | The Buff Stop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    html { scroll-behavior: smooth; }
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
+      background: #f4f4f4;
       color: #333;
     }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1em 2em;
-    }
-    header img { height: 50px; }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5em;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.9em;
-      margin: 0;
-      padding: 0;
-    }
-    nav ul li { position: relative; }
-    nav ul li a,
-    nav ul li button {
-      background: none;
-      border: none;
-      color: #333;
-      display: inline-block;
-      text-decoration: none;
-      cursor: pointer;
-      padding: 0.5em 1em;
-      transition: all 0.3s ease;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-    }
-    nav ul li a:hover,
-    nav ul li button:hover {
-      background: #dc143c;
-      color: white;
-    }
-    .dropdown-menu {
-      display: none;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      padding: 0.5em 1em;
-      list-style: none;
-      min-width: 180px;
-      z-index: 999;
-    }
-    nav ul li.show .dropdown-menu {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-    .dropdown-menu li a {
-      display: block;
-      padding: 0.5em 0;
-      color: #333;
-      text-decoration: none;
-      transition: color 0.2s ease;
-      font-size: 0.85em;
-    }
-    .dropdown-menu li a:hover { color: #dc143c; }
     main {
-      margin-top: 100px;
       padding: 2em 1em;
+      max-width: 700px;
+      margin: auto;
     }
-    h1, h2 {
-      text-align: center;
-      color: #dc143c;
-    }
+    h2 { color: #dc143c; text-align: center; }
     form {
-      max-width: 600px;
-      margin: 2em auto;
+      background: #fff;
       padding: 2em;
-      border: 1px solid #ccc;
       border-radius: 8px;
-      background: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     label {
       font-weight: 600;
@@ -115,103 +35,51 @@
       margin-top: 0.5em;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-sizing: border-box;
       font-size: 1em;
+      box-sizing: border-box;
     }
     button {
-      background-color: #dc143c;
+      background: #dc143c;
       color: white;
       border: none;
+      cursor: pointer;
       margin-top: 1.5em;
-      cursor: pointer;
     }
-    button:hover { background-color: #b01030; }
-    #addons-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5em 1em;
-      margin-top: 1em;
-    }
+    button:hover { background: #b01030; }
     #addons-container label {
-      font-weight: normal;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      align-items: center;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 0.6em 0.8em;
-      cursor: pointer;
-      transition: background 0.2s;
-      text-align: left;
-      width: 100%;
-      box-sizing: border-box;
-      gap: 1em;
+      display: block;
+      margin-top: 0.5em;
     }
-    #addons-container label:hover { background: #f0f0f0; }
-    #addons-container input[type="checkbox"] {
-      justify-self: end;
-      transform: scale(1.2);
-    }
-    #addons-wrapper {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: all 0.4s ease-in-out;
-    }
-    #addons-wrapper.show {
-      max-height: 1000px;
-      opacity: 1;
-    }
-    #confirmation {
-      max-width: 600px;
-      margin: 1em auto;
-      padding: 1em;
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-      border-radius: 5px;
-      text-align: center;
-      display: none;
+    .total {
+      font-weight: bold;
+      margin-top: 1.5em;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
-    <nav>
-      <ul>
-        <li><a href="index.html">HOME</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" onclick="event.preventDefault(); this.parentElement.classList.toggle('show');">SERVICES</a>
-          <ul class="dropdown-menu">
-            <li><a href="index.html#services">List of Services</a></li>
-            <li><a href="booking.html">Book an Appointment</a></li>
-          </ul>
-        </li>
-        <li><a href="index.html#gallery">GALLERY</a></li>
-        <li><a href="index.html#contact">CONTACT US</a></li>
-      </ul>
-    </nav>
-  </header>
   <main>
-    <h2>The Buff Stop - Premium Car Detailing</h2>
-    <div id="confirmation">Thank you! Your booking request has been sent successfully.</div>
+    <h2>Book Your Detailing Appointment</h2>
     <form id="booking-form" action="https://submit-form.com/x9zewaiyt" method="POST">
       <label for="name">Name</label>
-      <input type="text" id="name" name="Name" required>
+      <input type="text" id="name" name="name" required>
+
       <label for="email">Email</label>
-      <input type="email" id="email" name="_replyto" required>
+      <input type="email" id="email" name="email" required>
+
       <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="Phone" required>
+      <input type="tel" id="phone" required>
+
       <label for="year">Vehicle Year</label>
-      <input type="text" id="year" name="Year" required>
+      <input type="text" id="year" required>
+
       <label for="make">Vehicle Make</label>
-      <input type="text" id="make" name="Make" required>
+      <input type="text" id="make" required>
+
       <label for="model">Vehicle Model</label>
-      <input type="text" id="model" name="Model" required>
+      <input type="text" id="model" required>
+
       <label for="package">Select Package</label>
-      <select id="package" name="Package" required>
+      <select id="package" required>
         <option value="Basic Interior + Exterior">Basic Interior + Exterior ($240)</option>
         <option value="Basic Interior">Basic Interior ($140)</option>
         <option value="Basic Exterior">Basic Exterior ($125)</option>
@@ -220,30 +88,36 @@
         <option value="Full Service Int + Ext">Full Service Int + Ext ($495)</option>
         <option value="Car Presale Package">Car Presale Package ($575)</option>
       </select>
+
       <label for="preferred-date">Preferred Date</label>
-      <input type="date" id="preferred-date" name="Date" required>
+      <input type="date" id="preferred-date" required>
+
       <label for="notes">Additional Notes</label>
-      <textarea id="notes" name="Notes" rows="4" placeholder="Anything else we should know?"></textarea>
-      <label><button type="button" id="toggle-addons" style="margin-bottom: 0.5em;">Show Add-Ons</button></label>
-      <div id="addons-wrapper">
-        <div id="addons-container"></div>
-      </div>
-      <div style="margin-top: 1.5em; font-weight: bold;">Estimated Total: $<span id="estimated-total">0.00</span></div>
+      <textarea id="notes" rows="4" placeholder="Anything else we should know?"></textarea>
+
+      <label for="addons">Add-Ons</label>
+      <div id="addons-container"></div>
+
+      <div class="total">Estimated Total: $<span id="estimated-total">0.00</span></div>
+
+      <!-- This is the message field required by Formspree -->
+      <textarea name="message" id="message" style="display:none;"></textarea>
+
       <button type="submit">Submit Booking Request</button>
     </form>
   </main>
+
   <script>
     const form = document.getElementById('booking-form');
-    const addonsWrapper = document.getElementById('addons-wrapper');
-    const toggleAddonsBtn = document.getElementById('toggle-addons');
+    const packageSelect = document.getElementById('package');
     const addonsContainer = document.getElementById('addons-container');
     const estimatedTotal = document.getElementById('estimated-total');
-    const packageSelect = document.getElementById('package');
-    const preferredDateInput = document.getElementById('preferred-date');
-    const notesField = document.getElementById('notes');
+    const messageField = document.getElementById('message');
+    const notes = document.getElementById('notes');
+    const preferredDate = document.getElementById('preferred-date');
 
     const today = new Date().toISOString().split('T')[0];
-    preferredDateInput.setAttribute('min', today);
+    preferredDate.setAttribute('min', today);
 
     const basePrices = {
       "Basic Interior + Exterior": 240,
@@ -266,55 +140,41 @@
       { name: "Interior Scent Bomb", price: 10 }
     ];
 
-    const includedAddons = {
-      "Full Service Interior": ["Pet Hair Removal"],
-      "Full Service Exterior": ["Clay Bar Treatment"],
-      "Full Service Int + Ext": ["Pet Hair Removal", "Clay Bar Treatment"],
-      "Car Presale Package": ["Pet Hair Removal", "Clay Bar Treatment", "Engine Bay Detail"]
-    };
-
     function updateAddons() {
-      addonsContainer.innerHTML = "";
+      addonsContainer.innerHTML = '';
       addonList.forEach(addon => {
-        if (includedAddons[packageSelect.value]?.includes(addon.name)) return;
         const label = document.createElement('label');
-        const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.name = 'addons';
-        cb.value = addon.name;
-        cb.dataset.price = addon.price;
-        label.append(cb, ` ${addon.name} ($${addon.price})`);
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = addon.name;
+        checkbox.dataset.price = addon.price;
+        label.appendChild(checkbox);
+        label.append(` ${addon.name} ($${addon.price})`);
         addonsContainer.appendChild(label);
       });
     }
 
     function calculateTotal() {
       let total = basePrices[packageSelect.value] || 0;
-      addonsContainer.querySelectorAll('input[name="addons"]:checked').forEach(cb => {
+      const selectedAddons = [];
+      addonsContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+        selectedAddons.push(cb.value);
         total += parseFloat(cb.dataset.price);
       });
       estimatedTotal.textContent = total.toFixed(2);
+
+      const addonsText = selectedAddons.length ? `Add-Ons Selected: ${selectedAddons.join(', ')}` : 'No Add-Ons';
+      messageField.value =
+        `Package: ${packageSelect.value}\n` +
+        `Date: ${preferredDate.value}\n` +
+        `${addonsText}\n` +
+        `Estimated Total: $${total.toFixed(2)}\n\n` +
+        `Notes: ${notes.value.trim()}`;
     }
 
-    toggleAddonsBtn.addEventListener('click', () => {
-      addonsWrapper.classList.toggle('show');
-    });
-
-    packageSelect.addEventListener('change', () => {
-      updateAddons();
-      calculateTotal();
-    });
-
+    packageSelect.addEventListener('change', calculateTotal);
     addonsContainer.addEventListener('change', calculateTotal);
-
-    form.addEventListener('submit', () => {
-      calculateTotal();
-      const total = estimatedTotal.textContent;
-      const addonsSelected = Array.from(addonsContainer.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
-      const addonsText = addonsSelected.length ? `\n\nAdd‑Ons Selected: ${addonsSelected.join(', ')}` : "";
-      notesField.value = (notesField.value.trim() || "") + addonsText + `\n\nEstimated Total: $${total}`;
-      console.log('Submitting with Notes:', notesField.value);
-    });
+    form.addEventListener('submit', () => calculateTotal());
 
     updateAddons();
     calculateTotal();
