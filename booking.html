@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -232,123 +233,91 @@
     </form>
   </main>
   <script>
-  const form = document.getElementById('booking-form');
-  const confirmation = document.getElementById('confirmation');
-  const toggleAddonsBtn = document.getElementById('toggle-addons');
-  const addonsWrapper = document.getElementById('addons-wrapper');
-  const addonsContainer = document.getElementById('addons-container');
-  const estimatedTotal = document.getElementById('estimated-total');
-  const packageSelect = document.getElementById('package');
-  const preferredDateInput = document.getElementById('preferred-date');
-  const notesField = document.getElementById('notes');
+    const form = document.getElementById('booking-form');
+    const addonsWrapper = document.getElementById('addons-wrapper');
+    const toggleAddonsBtn = document.getElementById('toggle-addons');
+    const addonsContainer = document.getElementById('addons-container');
+    const estimatedTotal = document.getElementById('estimated-total');
+    const packageSelect = document.getElementById('package');
+    const preferredDateInput = document.getElementById('preferred-date');
+    const notesField = document.getElementById('notes');
 
-  const today = new Date().toISOString().split('T')[0];
-  preferredDateInput.setAttribute('min', today);
+    const today = new Date().toISOString().split('T')[0];
+    preferredDateInput.setAttribute('min', today);
 
-  const basePrices = {
-    "Basic Interior + Exterior": 240,
-    "Basic Interior": 140,
-    "Basic Exterior": 125,
-    "Full Service Interior": 260,
-    "Full Service Exterior": 275,
-    "Full Service Int + Ext": 495,
-    "Car Presale Package": 575
-  };
+    const basePrices = {
+      "Basic Interior + Exterior": 240,
+      "Basic Interior": 140,
+      "Basic Exterior": 125,
+      "Full Service Interior": 260,
+      "Full Service Exterior": 275,
+      "Full Service Int + Ext": 495,
+      "Car Presale Package": 575
+    };
 
-  const addonList = [
-    { name: "Engine Bay Detail", price: 50 },
-    { name: "Pet Hair Removal", price: 40 },
-    { name: "Salt Stain Removal", price: 30 },
-    { name: "Clay Bar Treatment", price: 35 },
-    { name: "Headlight Restoration", price: 60 },
-    { name: "Ceramic Spray Sealant", price: 45 },
-    { name: "Plastic Trim Restoration", price: 25 },
-    { name: "Interior Scent Bomb", price: 10 }
-  ];
+    const addonList = [
+      { name: "Engine Bay Detail", price: 50 },
+      { name: "Pet Hair Removal", price: 40 },
+      { name: "Salt Stain Removal", price: 30 },
+      { name: "Clay Bar Treatment", price: 35 },
+      { name: "Headlight Restoration", price: 60 },
+      { name: "Ceramic Spray Sealant", price: 45 },
+      { name: "Plastic Trim Restoration", price: 25 },
+      { name: "Interior Scent Bomb", price: 10 }
+    ];
 
-  const includedAddons = {
-    "Full Service Interior": ["Pet Hair Removal"],
-    "Full Service Exterior": ["Clay Bar Treatment"],
-    "Full Service Int + Ext": ["Pet Hair Removal", "Clay Bar Treatment"],
-    "Car Presale Package": ["Pet Hair Removal", "Clay Bar Treatment", "Engine Bay Detail"]
-  };
+    const includedAddons = {
+      "Full Service Interior": ["Pet Hair Removal"],
+      "Full Service Exterior": ["Clay Bar Treatment"],
+      "Full Service Int + Ext": ["Pet Hair Removal", "Clay Bar Treatment"],
+      "Car Presale Package": ["Pet Hair Removal", "Clay Bar Treatment", "Engine Bay Detail"]
+    };
 
-  function updateAddons() {
-    addonsContainer.innerHTML = "";
-    addonList.forEach(addon => {
-      if (includedAddons[packageSelect.value]?.includes(addon.name)) return;
-      const label = document.createElement('label');
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.name = 'addons';
-      cb.value = addon.name;
-      cb.dataset.price = addon.price;
-      label.append(cb, ` ${addon.name} ($${addon.price})`);
-      addonsContainer.appendChild(label);
+    function updateAddons() {
+      addonsContainer.innerHTML = "";
+      addonList.forEach(addon => {
+        if (includedAddons[packageSelect.value]?.includes(addon.name)) return;
+        const label = document.createElement('label');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.name = 'addons';
+        cb.value = addon.name;
+        cb.dataset.price = addon.price;
+        label.append(cb, ` ${addon.name} ($${addon.price})`);
+        addonsContainer.appendChild(label);
+      });
+    }
+
+    function calculateTotal() {
+      let total = basePrices[packageSelect.value] || 0;
+      addonsContainer.querySelectorAll('input[name="addons"]:checked').forEach(cb => {
+        total += parseFloat(cb.dataset.price);
+      });
+      estimatedTotal.textContent = total.toFixed(2);
+    }
+
+    toggleAddonsBtn.addEventListener('click', () => {
+      addonsWrapper.classList.toggle('show');
     });
-  }
 
-  function calculateTotal() {
-    let total = basePrices[packageSelect.value] || 0;
-    addonsContainer.querySelectorAll('input[name="addons"]:checked').forEach(cb => {
-      total += parseFloat(cb.dataset.price);
+    packageSelect.addEventListener('change', () => {
+      updateAddons();
+      calculateTotal();
     });
-    estimatedTotal.textContent = total.toFixed(2);
-  }
 
-  packageSelect.addEventListener('change', () => {
+    addonsContainer.addEventListener('change', calculateTotal);
+
+    form.addEventListener('submit', () => {
+      calculateTotal();
+      const total = estimatedTotal.textContent;
+      const addonsSelected = Array.from(addonsContainer.querySelectorAll('input[name="addons"]:checked')).map(cb => cb.value);
+      const addonsText = addonsSelected.length ? `\n\nAdd‑Ons Selected: ${addonsSelected.join(', ')}` : "";
+      notesField.value = (notesField.value.trim() || "") + addonsText + `\n\nEstimated Total: $${total}`;
+      console.log('Submitting with Notes:', notesField.value);
+    });
+
     updateAddons();
     calculateTotal();
-  });
-  addonsContainer.addEventListener('change', calculateTotal);
-
-  toggleAddonsBtn.addEventListener('click', () => {
-    addonsWrapper.classList.toggle('show');
-  });
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    calculateTotal();
-
-    const total = estimatedTotal.textContent;
-    const addonsSelected = Array.from(addonsContainer.querySelectorAll('input[name="addons"]:checked'))
-      .map(cb => cb.value);
-
-    const addonsText = addonsSelected.length
-      ? `\n\nAdd‑Ons Selected: ${addonsSelected.join(', ')}`
-      : "";
-
-    notesField.value = (notesField.value.trim() || "") + addonsText + `\n\nEstimated Total: $${total}`;
-
-    console.log('Package:', packageSelect.value);
-    console.log('Add-Ons:', addonsSelected);
-    console.log('Total:', total);
-    console.log('Notes field:', notesField.value);
-
-    fetch(form.action, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(form)
-    })
-    .then(r => {
-      console.log('Formspark status:', r.status);
-      if (r.ok) {
-        form.reset();
-        alert('Submitted — thank you!');
-      } else {
-        alert('Submission failed: ' + r.status);
-      }
-    })
-    .catch(err => {
-      console.error('Network/CORS error', err);
-      alert('Network error submitting form.');
-    });
-  });
-
-  updateAddons();
-  calculateTotal();
-</script>
-
+  </script>
 </body>
 </html>
