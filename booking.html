@@ -294,7 +294,7 @@ function calculateTotal() {
       addonsContainer.querySelectorAll('input[name="addons"]:checked').forEach(cb => {
         total += parseFloat(cb.dataset.price);
       });
-      estimatedTotalEl.textContent = total.toFixed(2);
+      estimatedTotal.textContent = total.toFixed(2);
     }
 
     packageSelect.addEventListener('change', () => {
@@ -307,7 +307,7 @@ form.addEventListener('submit', e => {
       e.preventDefault();
       calculateTotal();
 
-      const total = estimatedTotalEl.textContent;
+      const total = estimatedTotal.textContent;
       const addonsSelected = Array.from(addonsContainer.querySelectorAll('input[name="addons"]:checked'))
         .map(cb => cb.value);
 
