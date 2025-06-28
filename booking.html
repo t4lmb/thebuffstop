@@ -4,180 +4,722 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Your Appointment | The Buff Stop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       background: #f4f4f4;
       color: #333;
     }
-    main {
-      padding: 2em 1em;
-      max-width: 700px;
-      margin: auto;
+
+    /* FIXED HEADER - CONSISTENT WITH OTHER PAGES */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      transition: all 0.3s ease;
     }
-    h2 { color: #dc143c; text-align: center; }
-    form {
-      background: #fff;
-      padding: 2em;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    header img {
+      height: 50px;
+      transition: transform 0.3s ease;
     }
-    label {
+    header img:hover {
+      transform: scale(1.05);
+    }
+
+    /* NAVIGATION - CONSISTENT WITH OTHER PAGES */
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1em;
       font-weight: 600;
-      display: block;
-      margin-top: 1em;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      margin: 0;
+      padding: 0;
+      align-items: center;
     }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 0.8em;
-      margin-top: 0.5em;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1em;
-      box-sizing: border-box;
+    nav ul li {
+      position: relative;
     }
-    button {
+    nav ul li a,
+    nav ul li button {
+      background: transparent;
+      border: none;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0.8em 1.2em;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9em;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 8px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    nav ul li a:hover,
+    nav ul li button:hover {
       background: #dc143c;
       color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 1.5em;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
     }
-    button:hover { background: #b01030; }
-    #addons-container label {
+
+    /* DROPDOWN - CONSISTENT WITH OTHER PAGES */
+    .dropdown-menu {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      padding: 0.5em 0;
+      list-style: none;
+      min-width: 180px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      z-index: 1001;
+    }
+    nav ul li.show .dropdown-menu {
       display: block;
-      margin-top: 0.5em;
+      opacity: 1;
+      visibility: visible;
     }
-    .total {
+    .dropdown-menu li a {
+      display: block;
+      padding: 0.8em 1.2em;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.85em;
+      font-weight: 600;
+      border-radius: 0;
+      margin: 0;
+    }
+    .dropdown-menu li a:hover {
+      background: #dc143c;
+      color: white;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 800px;
+      margin: 120px auto 2em;
+      padding: 2em 1em;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      background: linear-gradient(135deg, #dc143c, #ff1744);
+      color: white;
+      text-align: center;
+      padding: 3em 2em;
+      border-radius: 15px;
+      margin-bottom: 3em;
+      box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
+    }
+    .hero-section h2 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .hero-section p {
+      font-size: 1.2em;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* FORM CONTAINER */
+    .form-container {
+      background: white;
+      padding: 3em;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .form-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    /* FORM STYLING */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+    }
+    
+    label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5em;
+      display: block;
+      font-size: 1em;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 1em;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      box-sizing: border-box;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #dc143c;
+      background: white;
+      box-shadow: 0 0 10px rgba(220, 20, 60, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* CUSTOM SELECT STYLING */
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+    .select-display {
+      width: 100%;
+      padding: 1em;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: 'Montserrat', sans-serif;
+      background: #fafafa;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .select-display:after {
+      content: '▼';
+      color: #666;
+      font-size: 0.8em;
+    }
+    .select-display:hover,
+    .select-display.active {
+      border-color: #dc143c;
+      background: white;
+      box-shadow: 0 0 10px rgba(220, 20, 60, 0.2);
+    }
+    .select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid #dc143c;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .select-options.active {
+      display: block;
+    }
+    .select-option {
+      padding: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .select-option:hover {
+      background: #f8f9fa;
+    }
+    .select-option:last-child {
+      border-bottom: none;
+    }
+    .package-pricing {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-top: 0.3em;
+    }
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.9em;
+    }
+    .discount-price {
+      color: #dc143c;
       font-weight: bold;
-      margin-top: 1.5em;
+      font-size: 1.1em;
+    }
+    .single-price {
+      color: #333;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    /* SUBMIT BUTTON */
+    button[type="submit"] {
+      background: linear-gradient(45deg, #dc143c, #ff1744);
+      color: white;
+      border: none;
+      padding: 1.2em 2em;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
+      margin-top: 1em;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
+    }
+
+    /* ADD-ONS SECTION */
+    #addons-section {
+      background: #f8f9fa;
+      padding: 1.5em;
+      border-radius: 10px;
+      border: 2px dashed #e0e0e0;
+      transition: all 0.3s ease;
+    }
+    #addons-section.active {
+      border-color: #dc143c;
+      background: #fff5f5;
+    }
+    
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1em;
+      margin-top: 1em;
+    }
+    
+    .addons-grid label {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 1em;
+      font-size: 0.95em;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .addons-grid label:hover {
+      border-color: #dc143c;
+      background: #fff5f5;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(220, 20, 60, 0.1);
+    }
+    
+    .addons-grid input[type="checkbox"] {
+      margin-right: 0.8em;
+      transform: scale(1.3);
+      accent-color: #dc143c;
+      width: auto;
+    }
+    
+    .addons-grid label.checked {
+      border-color: #dc143c;
+      background: linear-gradient(135deg, #fff5f5, #fff0f0);
+      color: #dc143c;
+      font-weight: 600;
+    }
+
+    /* TOTAL SECTION */
+    .total {
+      background: linear-gradient(135deg, #333, #555);
+      color: white;
+      padding: 1.5em;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 1.3em;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      margin: 1.5em 0;
+    }
+    .total span {
+      color: #4CAF50;
+      font-size: 1.2em;
+    }
+
+    /* HIDDEN MESSAGE FIELD */
+    #message {
+      display: none;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      main {
+        margin-top: 100px;
+        padding: 1em;
+      }
+      .hero-section {
+        padding: 2em 1em;
+      }
+      .hero-section h2 {
+        font-size: 2em;
+      }
+      .form-container {
+        padding: 2em 1.5em;
+      }
+      .addons-grid {
+        grid-template-columns: 1fr;
+      }
+      nav ul {
+        gap: 0.5em;
+      }
+      nav ul li a,
+      nav ul li button {
+        padding: 0.6em 0.8em;
+        font-size: 0.8em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 1.5em 1em;
+      }
+      input, select, textarea {
+        padding: 0.8em;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
+    <nav>
+      <ul>
+        <li><a href="index.html">HOME</a></li>
+        <li onclick="this.classList.toggle('show')">
+          <button type="button">SERVICES</button>
+          <ul class="dropdown-menu">
+            <li><a href="services.html">List of Services</a></li>
+            <li><a href="booking.html">Book an Appointment</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#gallery">GALLERY</a></li>
+        <li><a href="index.html#contact">CONTACT US</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <main>
-    <h2>Book Your Detailing Appointment</h2>
-    <form id="booking-form" action="https://submit-form.com/x9zewaiyt" method="POST">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
+    <section class="hero-section">
+      <h2>Book Your Detailing Appointment</h2>
+      <p>Get your vehicle professionally detailed with our premium services. Fill out the form below and we'll get back to you with confirmation details.</p>
+    </section>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
+    <div class="form-container">
+      <form id="booking-form" action="https://submit-form.com/x9zewaiyt" method="POST">
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required placeholder="Enter your full name">
+        </div>
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" required>
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
 
-      <label for="year">Vehicle Year</label>
-      <input type="text" id="year" required>
+        <div>
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required placeholder="(123) 456-7890">
+        </div>
 
-      <label for="make">Vehicle Make</label>
-      <input type="text" id="make" required>
+        <div>
+          <label for="vehicle-type">Vehicle Type</label>
+          <select id="vehicle-type" name="vehicle-type" required>
+            <option value="">Select your vehicle type</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Truck">Truck</option>
+            <option value="Van">Van</option>
+          </select>
+        </div>
 
-      <label for="model">Vehicle Model</label>
-      <input type="text" id="model" required>
+        <div>
+          <label for="package">Select Package</label>
+          <div class="custom-select">
+            <div class="select-display" id="package-display">Choose a service package</div>
+            <div class="select-options" id="package-options"></div>
+            <input type="hidden" id="package" name="package" required>
+          </div>
+        </div>
 
-      <label for="package">Select Package</label>
-      <select id="package" required>
-        <option value="Basic Interior + Exterior">Basic Interior + Exterior ($240)</option>
-        <option value="Basic Interior">Basic Interior ($140)</option>
-        <option value="Basic Exterior">Basic Exterior ($125)</option>
-        <option value="Full Service Interior">Full Service Interior ($260)</option>
-        <option value="Full Service Exterior">Full Service Exterior ($275)</option>
-        <option value="Full Service Int + Ext">Full Service Int + Ext ($495)</option>
-        <option value="Car Presale Package">Car Presale Package ($575)</option>
-      </select>
+        <div>
+          <label for="date">Preferred Date</label>
+          <input type="date" id="date" name="preferred-date" required>
+        </div>
 
-      <label for="preferred-date">Preferred Date</label>
-      <input type="date" id="preferred-date" required>
+        <div id="addons-section" style="display:none;">
+          <label>Available Add-Ons</label>
+          <div class="addons-grid" id="addons-container"></div>
+        </div>
 
-      <label for="notes">Additional Notes</label>
-      <textarea id="notes" rows="4" placeholder="Anything else we should know?"></textarea>
+        <div>
+          <label for="notes">Additional Notes</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Tell us anything special about your vehicle or specific requests..."></textarea>
+        </div>
 
-      <label for="addons">Add-Ons</label>
-      <div id="addons-container"></div>
+        <div class="total">
+          Estimated Total: $<span id="total">0.00</span>
+        </div>
 
-      <div class="total">Estimated Total: $<span id="estimated-total">0.00</span></div>
-
-      <!-- This is the message field required by Formspree -->
-      <textarea name="message" id="message" style="display:none;"></textarea>
-
-      <button type="submit">Submit Booking Request</button>
-    </form>
+        <textarea name="message" id="message" style="display:none;"></textarea>
+        <button type="submit">Submit Booking Request</button>
+      </form>
+    </div>
   </main>
 
   <script>
-    const form = document.getElementById('booking-form');
-    const packageSelect = document.getElementById('package');
-    const addonsContainer = document.getElementById('addons-container');
-    const estimatedTotal = document.getElementById('estimated-total');
-    const messageField = document.getElementById('message');
-    const notes = document.getElementById('notes');
-    const preferredDate = document.getElementById('preferred-date');
+    // DOM Elements
+    const vehicleTypeEl = document.getElementById('vehicle-type');
+    const packageDisplayEl = document.getElementById('package-display');
+    const packageOptionsEl = document.getElementById('package-options');
+    const packageHiddenEl = document.getElementById('package');
+    const addonsContainerEl = document.getElementById('addons-container');
+    const addonsSectionEl = document.getElementById('addons-section');
+    const totalDisplayEl = document.getElementById('total');
+    const messageFieldEl = document.getElementById('message');
 
-    const today = new Date().toISOString().split('T')[0];
-    preferredDate.setAttribute('min', today);
-
-    const basePrices = {
-      "Basic Interior + Exterior": 240,
-      "Basic Interior": 140,
-      "Basic Exterior": 125,
-      "Full Service Interior": 260,
-      "Full Service Exterior": 275,
-      "Full Service Int + Ext": 495,
-      "Car Presale Package": 575
+    // Package prices from PDF (with 10-15% discounts already applied)
+    const packagePrices = {
+      "Basic Interior": { Sedan: 140, SUV: 185, Truck: 200, Van: 230 },
+      "Basic Exterior": { Sedan: 80, SUV: 100, Truck: 120, Van: 120 },
+      "Full Service Interior": { Sedan: 392, SUV: 473, Truck: 527, Van: 572 },
+      "Full Service Exterior": { Sedan: 581, SUV: 630, Truck: 680, Van: 711 },
+      "Full Service Int + Ext": { Sedan: 918, SUV: 1041, Truck: 1139, Van: 1211 },
+      "Car Presale Package": { Sedan: 392, SUV: 455, Truck: 491, Van: 522 }
     };
 
-    const addonList = [
-      { name: "Engine Bay Detail", price: 50 },
-      { name: "Pet Hair Removal", price: 40 },
-      { name: "Salt Stain Removal", price: 30 },
-      { name: "Clay Bar Treatment", price: 35 },
-      { name: "Headlight Restoration", price: 60 },
-      { name: "Ceramic Spray Sealant", price: 45 },
-      { name: "Plastic Trim Restoration", price: 25 },
-      { name: "Interior Scent Bomb", price: 10 }
-    ];
+    // Original prices before discount for display purposes
+    const originalPackagePrices = {
+      "Basic Interior": { Sedan: 140, SUV: 185, Truck: 200, Van: 230 },
+      "Basic Exterior": { Sedan: 80, SUV: 100, Truck: 120, Van: 120 },
+      "Full Service Interior": { Sedan: 435, SUV: 525, Truck: 585, Van: 635 },
+      "Full Service Exterior": { Sedan: 645, SUV: 700, Truck: 755, Van: 790 },
+      "Full Service Int + Ext": { Sedan: 1080, SUV: 1225, Truck: 1340, Van: 1425 },
+      "Car Presale Package": { Sedan: 435, SUV: 505, Truck: 545, Van: 580 }
+    };
 
-    function updateAddons() {
-      addonsContainer.innerHTML = '';
-      addonList.forEach(addon => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = addon.name;
-        checkbox.dataset.price = addon.price;
-        label.appendChild(checkbox);
-        label.append(` ${addon.name} ($${addon.price})`);
-        addonsContainer.appendChild(label);
-      });
+    // Discount percentages
+    const packageDiscounts = {
+      "Basic Interior": 0,
+      "Basic Exterior": 0,
+      "Full Service Interior": 10,
+      "Full Service Exterior": 10,
+      "Full Service Int + Ext": 15,
+      "Car Presale Package": 10
+    };
+
+    // Available add-ons based on what's NOT included in each package
+    const packageAddons = {
+      "Basic Interior": {
+        "Sedan": ["Interior Steam Sanitization", "Carpet/Seat Shampooing", "Interior Dressing + Protectant", "Interior Window Defog Application", "Ozone Deodorizer Treatment"],
+        "SUV": ["Interior Steam Sanitization", "Carpet/Seat Shampooing", "Interior Dressing + Protectant", "Interior Window Defog Application", "Ozone Deodorizer Treatment"],
+        "Truck": ["Interior Steam Sanitization", "Carpet/Seat Shampooing", "Interior Dressing + Protectant", "Interior Window Defog Application", "Ozone Deodorizer Treatment"],
+        "Van": ["Interior Steam Sanitization", "Carpet/Seat Shampooing", "Interior Dressing + Protectant", "Interior Window Defog Application", "Ozone Deodorizer Treatment"]
+      },
+      "Basic Exterior": {
+        "Sedan": ["Machine-Applied Wax", "Paint Decontamination", "Engine Bay Cleaning", "Exterior Trim Restoration", "Headlight Restoration", "Exterior Window Water Repellent", "Deep Wheel Cleaning"],
+        "SUV": ["Machine-Applied Wax", "Paint Decontamination", "Engine Bay Cleaning", "Exterior Trim Restoration", "Headlight Restoration", "Exterior Window Water Repellent", "Deep Wheel Cleaning"],
+        "Truck": ["Machine-Applied Wax", "Paint Decontamination", "Engine Bay Cleaning", "Exterior Trim Restoration", "Headlight Restoration", "Exterior Window Water Repellent", "Deep Wheel Cleaning"],
+        "Van": ["Machine-Applied Wax", "Paint Decontamination", "Engine Bay Cleaning", "Exterior Trim Restoration", "Headlight Restoration", "Exterior Window Water Repellent", "Deep Wheel Cleaning"]
+      },
+      "Full Service Interior": { "Sedan": [], "SUV": [], "Truck": [], "Van": [] },
+      "Full Service Exterior": { "Sedan": [], "SUV": [], "Truck": [], "Van": [] },
+      "Full Service Int + Ext": { "Sedan": [], "SUV": [], "Truck": [], "Van": [] },
+      "Car Presale Package": { "Sedan": [], "SUV": [], "Truck": [], "Van": [] }
+    };
+
+    // Individual add-on prices by vehicle type
+    const addonPricingData = {
+      "Interior Steam Sanitization": { Sedan: 30, SUV: 40, Truck: 50, Van: 60 },
+      "Carpet/Seat Shampooing": { Sedan: 50, SUV: 75, Truck: 100, Van: 100 },
+      "Interior Dressing + Protectant": { Sedan: 65, SUV: 75, Truck: 85, Van: 95 },
+      "Interior Window Defog Application": { Sedan: 25, SUV: 25, Truck: 25, Van: 25 },
+      "Ozone Deodorizer Treatment": { Sedan: 125, SUV: 125, Truck: 125, Van: 125 },
+      "Machine-Applied Wax": { Sedan: 50, SUV: 65, Truck: 80, Van: 95 },
+      "Paint Decontamination": { Sedan: 75, SUV: 90, Truck: 105, Van: 120 },
+      "Engine Bay Cleaning": { Sedan: 75, SUV: 75, Truck: 75, Van: 75 },
+      "Exterior Trim Restoration": { Sedan: 60, SUV: 65, Truck: 70, Van: 75 },
+      "Headlight Restoration": { Sedan: 80, SUV: 80, Truck: 80, Van: 80 },
+      "Exterior Window Water Repellent": { Sedan: 25, SUV: 25, Truck: 25, Van: 25 },
+      "Deep Wheel Cleaning": { Sedan: 200, SUV: 200, Truck: 200, Van: 200 }
+    };
+
+    function updatePackageOptions() {
+      const vehicleType = vehicleTypeEl.value;
+      packageOptionsEl.innerHTML = '';
+      packageDisplayEl.textContent = 'Choose a service package';
+      packageHiddenEl.value = '';
+      
+      if (vehicleType) {
+        for (const pkgName in packagePrices) {
+          const currentPrice = packagePrices[pkgName][vehicleType];
+          const originalPrice = originalPackagePrices[pkgName][vehicleType];
+          const discount = packageDiscounts[pkgName];
+          
+          const optionDiv = document.createElement('div');
+          optionDiv.className = 'select-option';
+          optionDiv.dataset.value = pkgName;
+          
+          const packageNameDiv = document.createElement('div');
+          packageNameDiv.textContent = pkgName;
+          packageNameDiv.style.fontWeight = '600';
+          
+          const pricingDiv = document.createElement('div');
+          pricingDiv.className = 'package-pricing';
+          
+          if (discount > 0) {
+            const originalSpan = document.createElement('span');
+            originalSpan.className = 'original-price';
+            originalSpan.textContent = `$${originalPrice}`;
+            
+            const discountSpan = document.createElement('span');
+            discountSpan.className = 'discount-price';
+            discountSpan.textContent = `$${currentPrice}`;
+            
+            pricingDiv.appendChild(originalSpan);
+            pricingDiv.appendChild(discountSpan);
+          } else {
+            const singleSpan = document.createElement('span');
+            singleSpan.className = 'single-price';
+            singleSpan.textContent = `$${currentPrice}`;
+            pricingDiv.appendChild(singleSpan);
+          }
+          
+          optionDiv.appendChild(packageNameDiv);
+          optionDiv.appendChild(pricingDiv);
+          
+          optionDiv.addEventListener('click', function() {
+            packageDisplayEl.textContent = `${pkgName} ($${currentPrice})`;
+            packageHiddenEl.value = pkgName;
+            packageOptionsEl.classList.remove('active');
+            packageDisplayEl.classList.remove('active');
+            updateAddonOptions();
+            calculateTotalPrice();
+          });
+          
+          packageOptionsEl.appendChild(optionDiv);
+        }
+      }
+      updateAddonOptions();
+      calculateTotalPrice();
     }
 
-    function calculateTotal() {
-      let total = basePrices[packageSelect.value] || 0;
-      const selectedAddons = [];
-      addonsContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-        selectedAddons.push(cb.value);
-        total += parseFloat(cb.dataset.price);
-      });
-      estimatedTotal.textContent = total.toFixed(2);
+    // Custom select functionality
+    packageDisplayEl.addEventListener('click', function() {
+      if (vehicleTypeEl.value) {
+        packageOptionsEl.classList.toggle('active');
+        packageDisplayEl.classList.toggle('active');
+      }
+    });
 
-      const addonsText = selectedAddons.length ? `Add-Ons Selected: ${selectedAddons.join(', ')}` : 'No Add-Ons';
-      messageField.value =
-        `Package: ${packageSelect.value}\n` +
-        `Date: ${preferredDate.value}\n` +
-        `${addonsText}\n` +
-        `Estimated Total: $${total.toFixed(2)}\n\n` +
-        `Notes: ${notes.value.trim()}`;
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        packageOptionsEl.classList.remove('active');
+        packageDisplayEl.classList.remove('active');
+      }
+    });
+
+    function updateAddonOptions() {
+      const selectedPackage = packageHiddenEl.value;
+      const vehicleType = vehicleTypeEl.value;
+      const availableAddonsList = packageAddons[selectedPackage] && packageAddons[selectedPackage][vehicleType] ? packageAddons[selectedPackage][vehicleType] : [];
+      addonsContainerEl.innerHTML = '';
+      
+      if (availableAddonsList.length > 0) {
+        addonsSectionEl.style.display = 'block';
+        addonsSectionEl.classList.add('active');
+        
+        availableAddonsList.forEach(addonName => {
+          const labelEl = document.createElement('label');
+          const checkboxEl = document.createElement('input');
+          checkboxEl.type = 'checkbox';
+          checkboxEl.name = 'addons';
+          checkboxEl.value = addonName;
+          checkboxEl.dataset.price = addonPricingData[addonName][vehicleType];
+          checkboxEl.addEventListener('change', function() {
+            calculateTotalPrice();
+            if (this.checked) {
+              labelEl.classList.add('checked');
+            } else {
+              labelEl.classList.remove('checked');
+            }
+          });
+          labelEl.appendChild(checkboxEl);
+          labelEl.append(` ${addonName} (+$${addonPricingData[addonName][vehicleType]})`);
+          addonsContainerEl.appendChild(labelEl);
+        });
+      } else {
+        addonsSectionEl.style.display = 'none';
+        addonsSectionEl.classList.remove('active');
+      }
     }
 
-    packageSelect.addEventListener('change', calculateTotal);
-    addonsContainer.addEventListener('change', calculateTotal);
-    form.addEventListener('submit', () => calculateTotal());
+    function calculateTotalPrice() {
+      const vehicleType = vehicleTypeEl.value;
+      const selectedPackage = packageHiddenEl.value;
+      let totalPrice = 0;
+      const selectedAddonsList = [];
 
-    updateAddons();
-    calculateTotal();
+      if (vehicleType && selectedPackage && packagePrices[selectedPackage]) {
+        totalPrice = packagePrices[selectedPackage][vehicleType];
+      }
+
+      addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+        totalPrice += parseFloat(checkbox.dataset.price);
+        selectedAddonsList.push(checkbox.value);
+      });
+
+      totalDisplayEl.textContent = totalPrice.toFixed(2);
+      messageFieldEl.value = `Vehicle Type: ${vehicleType}\nPackage: ${selectedPackage}\nAdd-Ons: ${selectedAddonsList.join(', ')}\nEstimated Total: $${totalPrice.toFixed(2)}`;
+    }
+
+    vehicleTypeEl.addEventListener('change', updatePackageOptions);
+
+    document.getElementById('booking-form').addEventListener('submit', calculateTotalPrice);
+
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').setAttribute('min', today);
+
+    updatePackageOptions();
   </script>
 </body>
 </html>
