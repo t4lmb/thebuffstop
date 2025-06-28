@@ -302,6 +302,12 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
     }
+    button[type="submit"]:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
 
     /* ADD-ONS SECTION */
     #addons-section {
@@ -372,11 +378,6 @@
     .total span {
       color: #4CAF50;
       font-size: 1.2em;
-    }
-
-    /* HIDDEN MESSAGE FIELD */
-    #message {
-      display: none;
     }
 
     /* RESPONSIVE DESIGN */
@@ -655,7 +656,11 @@
           Estimated Total: $<span id="total">0.00</span>
         </div>
 
-        <textarea name="message" id="message" style="display:none;"></textarea>
+        <!-- Hidden fields for Netlify form processing -->
+        <input type="hidden" name="selected-addons" id="selected-addons" value="">
+        <input type="hidden" name="estimated-total" id="estimated-total" value="">
+        <input type="hidden" name="booking-summary" id="booking-summary" value="">
+
         <button type="submit">Submit Booking Request</button>
       </form>
     </div>
@@ -670,7 +675,6 @@
     const addonsContainerEl = document.getElementById('addons-container');
     const addonsSectionEl = document.getElementById('addons-section');
     const totalDisplayEl = document.getElementById('total');
-    const messageFieldEl = document.getElementById('message');
 
     // Package prices from PDF (with 10-15% discounts already applied)
     const packagePrices = {
@@ -783,7 +787,7 @@
           optionDiv.appendChild(pricingDiv);
           
           optionDiv.addEventListener('click', function() {
-            packageDisplayEl.textContent = `${pkgName} ($${currentPrice})`;
+            packageDisplayEl.textContent = `${pkgName} (${currentPrice})`;
             packageHiddenEl.value = pkgName;
             packageOptionsEl.classList.remove('active');
             packageDisplayEl.classList.remove('active');
@@ -833,6 +837,7 @@
           checkboxEl.dataset.price = addonPricingData[addonName][vehicleType];
           checkboxEl.addEventListener('change', function() {
             calculateTotalPrice();
+            updateHiddenFields();
             if (this.checked) {
               labelEl.classList.add('checked');
             } else {
@@ -853,7 +858,6 @@
       const vehicleType = vehicleTypeEl.value;
       const selectedPackage = packageHiddenEl.value;
       let totalPrice = 0;
-      const selectedAddonsList = [];
 
       if (vehicleType && selectedPackage && packagePrices[selectedPackage]) {
         totalPrice = packagePrices[selectedPackage][vehicleType];
@@ -861,22 +865,40 @@
 
       addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
         totalPrice += parseFloat(checkbox.dataset.price);
-        selectedAddonsList.push(checkbox.value);
       });
 
       totalDisplayEl.textContent = totalPrice.toFixed(2);
-      messageFieldEl.value = `Vehicle Type: ${vehicleType}\nPackage: ${selectedPackage}\nAdd-Ons: ${selectedAddonsList.join(', ')}\nEstimated Total: ${totalPrice.toFixed(2)}`;
+      updateHiddenFields();
+    }
+
+    function updateHiddenFields() {
+      const vehicleType = vehicleTypeEl.value;
+      const selectedPackage = packageHiddenEl.value;
+      const selectedAddons = [];
+      const total = totalDisplayEl.textContent;
+
+      // Get selected add-ons
+      addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+        selectedAddons.push(`${checkbox.value} (+${checkbox.dataset.price})`);
+      });
+
+      // Update hidden fields for Netlify
+      document.getElementById('selected-addons').value = selectedAddons.join(', ');
+      document.getElementById('estimated-total').value = total;
+      
+      // Create booking summary
+      let summary = `Vehicle: ${vehicleType}\nPackage: ${selectedPackage}`;
+      if (selectedAddons.length > 0) {
+        summary += `\nAdd-ons: ${selectedAddons.join(', ')}`;
+      }
+      summary += `\nEstimated Total: ${total}`;
+      
+      document.getElementById('booking-summary').value = summary;
     }
 
     vehicleTypeEl.addEventListener('change', updatePackageOptions);
 
     document.getElementById('booking-form').addEventListener('submit', function(e) {
-      calculateTotalPrice();
-      
-      console.log('Form submitting with data:', new FormData(this));
-      console.log('Package value:', packageHiddenEl.value);
-      console.log('Vehicle type:', vehicleTypeEl.value);
-      
       // Ensure required fields are filled
       if (!packageHiddenEl.value) {
         e.preventDefault();
@@ -884,14 +906,21 @@
         return;
       }
       
+      // Update hidden fields one final time
+      updateHiddenFields();
+      
       // Show loading state
       const submitBtn = this.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
       submitBtn.textContent = 'Submitting...';
       submitBtn.disabled = true;
       
-      // For Netlify forms, we can use normal form submission
-      // The form will redirect to a success page or show a success message
+      console.log('Form data being submitted:');
+      console.log('Package:', packageHiddenEl.value);
+      console.log('Vehicle type:', vehicleTypeEl.value);
+      console.log('Selected addons:', document.getElementById('selected-addons').value);
+      console.log('Total:', document.getElementById('estimated-total').value);
+      console.log('Summary:', document.getElementById('booking-summary').value);
     });
 
     // Set minimum date to today
