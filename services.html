@@ -148,8 +148,13 @@
     .hero-section h3 {
       font-size: 1.3em;
       font-weight: 400;
-      margin-bottom: 2em;
+      margin-bottom: 1em;
       opacity: 0.9;
+    }
+    .hero-section p {
+      font-size: 1em;
+      opacity: 0.8;
+      margin-top: 1em;
     }
 
     /* PDF DOWNLOAD */
@@ -325,7 +330,6 @@
 
     /* RESPONSIVE DESIGN */
     @media (max-width: 1024px) {
-      /* Tablet adjustments */
       main {
         margin-top: 100px;
         padding: 0.8em;
@@ -345,7 +349,6 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile adjustments */
       header {
         padding: 0.8em 1em;
       }
@@ -434,7 +437,6 @@
     }
 
     @media (max-width: 640px) {
-      /* Smaller mobile - horizontal scroll for tables */
       .package-table {
         min-width: 600px;
       }
@@ -445,7 +447,6 @@
     }
 
     @media (max-width: 480px) {
-      /* Small mobile adjustments */
       header {
         padding: 0.5em 0.8em;
       }
@@ -518,6 +519,7 @@
     <section class="hero-section">
       <h1>Packages Breakdown</h1>
       <h3>Click on a service to view more information!</h3>
+      <p>View the PDF at the bottom for full pricing details and package totals.</p>
     </section>
 
     <div class="package-section">
@@ -531,7 +533,6 @@
           <tr><td><span class="clickable" onclick="showBubble('interiorDressing')">Interior Dressing + Protectant</span></td><td>$65</td><td>$75</td><td>$85</td><td>$95</td></tr>
           <tr><td><span class="clickable" onclick="showBubble('windowDefog')">Interior Window Defog Application</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
           <tr><td><span class="clickable" onclick="showBubble('ozoneTreatment')">Ozone Deodorizer Treatment</span></td><td>$125</td><td>$125</td><td>$125</td><td>$125</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td>$30</td><td>$30</td><td>$30</td><td>$30</td></tr>
         </tbody>
       </table>
     </div>
@@ -541,25 +542,51 @@
       <table class="package-table">
         <thead><tr><th>Service</th><th>Sedan</th><th>SUV</th><th>Truck</th><th>Van</th></tr></thead>
         <tbody>
-          <tr><td><span class="clickable" onclick="showBubble('basicExterior')">Basic Exterior</span></td><td>$125</td><td>$140</td><td>$155</td><td>$165</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('clayBar')">Clay Bar Decontamination</span></td><td>$60</td><td>$70</td><td>$80</td><td>$90</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('polish')">One Step Polish</span></td><td>$125</td><td>$150</td><td>$175</td><td>$200</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('ceramicSealant')">Ceramic Sealant Topper</span></td><td>$75</td><td>$85</td><td>$95</td><td>$105</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('trimRestoration')">Trim Restoration</span></td><td>$45</td><td>$55</td><td>$65</td><td>$75</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td>$30</td><td>$30</td><td>$30</td><td>$30</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('basicExterior')">Basic Exterior</span></td><td>$80</td><td>$100</td><td>$120</td><td>$120</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('machineWax')">Machine-Applied Wax</span></td><td>$50</td><td>$65</td><td>$80</td><td>$95</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('paintDecon')">Paint Decontamination (Chem & Mech)</span></td><td>$75</td><td>$90</td><td>$105</td><td>$120</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('engineBay')">Engine Bay Cleaning</span></td><td>$75</td><td>$75</td><td>$75</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('trimRestoration')">Exterior Trim Restoration</span></td><td>$60</td><td>$65</td><td>$70</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('headlight')">Headlight Restoration</span></td><td>$80</td><td>$80</td><td>$80</td><td>$80</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('windowRepellent')">Exterior Window Water Repellent</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td colspan="4" style="text-align: center; font-style: italic;">$50 per Wheel ($200)</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="package-section">
-      <h2>Car Presale Packages</h2>
+      <h2>Full Service Int + Ext</h2>
       <table class="package-table">
-        <thead><tr><th>Service</th><th>Flat Rate</th></tr></thead>
+        <thead><tr><th>Service</th><th>Sedan</th><th>SUV</th><th>Truck</th><th>Van</th></tr></thead>
         <tbody>
-          <tr><td><span class="clickable" onclick="showBubble('engineBay')">Engine Bay Cleaning</span></td><td>$75</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('petHair')">Pet Hair Removal</span></td><td>$60</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('headlight')">Headlight Restoration</span></td><td>$50</td></tr>
-          <tr><td><span class="clickable" onclick="showBubble('odour')">Odour Elimination Treatment</span></td><td>$125</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('basicInterior')">Basic Interior</span></td><td>$140</td><td>$185</td><td>$200</td><td>$230</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('basicExterior')">Basic Exterior</span></td><td>$80</td><td>$100</td><td>$120</td><td>$120</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('interiorSteam')">Interior Steam Sanitization</span></td><td>$30</td><td>$40</td><td>$50</td><td>$60</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('carpetShampoo')">Carpet/Seat Shampooing</span></td><td>$50</td><td>$75</td><td>$100</td><td>$100</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('interiorDressing')">Interior Dressing + Protectant</span></td><td>$65</td><td>$75</td><td>$85</td><td>$95</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('windowDefog')">Interior Window Defog Application</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('ozoneTreatment')">Ozone Deodorizer Treatment</span></td><td>$125</td><td>$125</td><td>$125</td><td>$125</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('machineWax')">Machine-Applied Wax</span></td><td>$50</td><td>$65</td><td>$80</td><td>$95</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('paintDecon')">Paint Decontamination (Chem & Mech)</span></td><td>$75</td><td>$90</td><td>$105</td><td>$120</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('engineBay')">Engine Bay Cleaning</span></td><td>$75</td><td>$75</td><td>$75</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('trimRestoration')">Exterior Trim Restoration</span></td><td>$60</td><td>$65</td><td>$70</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('headlight')">Headlight Restoration</span></td><td>$80</td><td>$80</td><td>$80</td><td>$80</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('windowRepellent')">Exterior Window Water Repellent</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td colspan="4" style="text-align: center; font-style: italic;">$50 per Wheel ($200)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="package-section">
+      <h2>Car Presale Package</h2>
+      <table class="package-table">
+        <thead><tr><th>Service</th><th>Sedan</th><th>SUV</th><th>Truck</th><th>Van</th></tr></thead>
+        <tbody>
+          <tr><td><span class="clickable" onclick="showBubble('basicInterior')">Basic Interior</span></td><td>$140</td><td>$185</td><td>$200</td><td>$230</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('basicExterior')">Basic Exterior</span></td><td>$80</td><td>$100</td><td>$120</td><td>$120</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('headlight')">Headlight Restoration</span></td><td>$80</td><td>$80</td><td>$80</td><td>$80</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('engineBay')">Engine Bay Cleaning</span></td><td>$75</td><td>$75</td><td>$75</td><td>$75</td></tr>
+          <tr><td><span class="clickable" onclick="showBubble('trimRestoration')">Exterior Trim Restoration</span></td><td>$60</td><td>$65</td><td>$70</td><td>$75</td></tr>
         </tbody>
       </table>
     </div>
@@ -585,23 +612,19 @@
 
     basicExterior: `<h3>Basic Exterior</h3><p><strong>Our Basic Exterior Detail is the perfect way to maintain your vehicle's shine and protection without the time or cost of a full correction.</strong></p><ul><li>Pre-Foam Soak – Loosens dirt and grime safely</li><li>Gentle Hand Wash – Microfiber mitts and pH-balanced soap</li><li>Sealant Application – Boosts shine and paint protection</li><li>Hand Drying – Scratch-free microfiber finish</li><li>Tire Cleaning & Shine</li><li>Streak-Free Window Cleaning</li></ul><p><strong>Why it works:</strong> Enhances gloss, protects from grime/UV, great between deep details.</p><p><strong>Perfect for:</strong> Monthly upkeep, post-road trip refresh.</p>`,
 
-    clayBar: `<h3>Clay Bar Decontamination</h3><p>Removes embedded contaminants like tar, tree sap, and industrial fallout. Restores smooth paint feel before polishing or sealing.</p>`,
+    machineWax: `<h3>Machine-Applied Wax</h3><p>Professional machine application of high-quality carnauba or synthetic wax for enhanced protection and deep shine. Creates a durable barrier against environmental contaminants.</p><p><strong>Benefits:</strong> Extended paint protection, enhanced gloss, and easier maintenance.</p>`,
 
-    polish: `<h3>One Step Polish</h3><p>Machine polish improves gloss, removes light swirls, oxidation, and restores clarity. Finished with a sealant.</p><p><strong>Great for:</strong> neglected paint, pre-sale prep, seasonal shine.</p>`,
+    paintDecon: `<h3>Paint Decontamination (Chemical & Mechanical)</h3><p>Two-step process using chemical decontamination followed by mechanical clay bar treatment to remove embedded contaminants, tar, tree sap, and industrial fallout.</p><p><strong>Perfect for:</strong> Vehicles exposed to harsh conditions or before wax/sealant application.</p>`,
 
-    ceramicSealant: `<h3>Ceramic Sealant Topper</h3><p>SiO2-based spray applied for hydrophobic protection and shine. Extends wax/coating life.</p><p><strong>Lasts:</strong> 3-6 months.</p>`,
+    windowRepellent: `<h3>Exterior Window Water Repellent</h3><p>Hydrophobic coating applied to exterior glass surfaces improves visibility during rain and makes cleaning easier.</p><p><strong>Benefits:</strong> Better driving visibility, reduced water spotting, and easier maintenance.</p>`,
 
-    trimRestoration: `<h3>Trim Restoration</h3><p>Restores faded plastic trim to a dark factory finish. Durable coating helps repel water and UV rays.</p><p><strong>Best for:</strong> aging exterior plastics on bumpers, mirrors, and window seals.</p>`,
-
-    engineBay: `<h3>Engine Bay Detailing</h3><p>Degrease and dress engine components safely. Helps with resale and maintenance visibility.</p>`,
-
-    petHair: `<h3>Pet Hair Removal</h3><p>Deep brushing and vacuuming removes stubborn embedded pet hair.</p><p><strong>Recommended:</strong> for vehicles with heavy shedding or dander.</p>`,
+    engineBay: `<h3>Engine Bay Cleaning</h3><p>Degrease and dress engine components safely. Helps with resale and maintenance visibility.</p>`,
 
     headlight: `<h3>Headlight Restoration</h3><p>Multi-step sanding, polishing, and sealing process restores cloudy headlights to clarity.</p><p><strong>Improves:</strong> nighttime visibility and appearance.</p>`,
 
-    odour: `<h3>Odour Elimination Treatment</h3><p>Combined shampooing, steam cleaning, and ozone neutralization for strong odors like smoke, mildew, or food spills.</p>`,
+    trimRestoration: `<h3>Trim Restoration</h3><p>Restores faded plastic trim to a dark factory finish. Durable coating helps repel water and UV rays.</p><p><strong>Best for:</strong> aging exterior plastics on bumpers, mirrors, and window seals.</p>`,
 
-    deepWheel: `<h3>Deep Wheel Cleaning</h3><p>Your wheels take the brunt of the road brake dust, road grime, salt, and grease all build up fast. Our <strong>Deep Wheel Cleaning</strong> service goes beyond a basic rinse to safely break down and remove stubborn buildup, leaving your rims, lug nuts, and barrels spotless. </p>`
+    deepWheel: `<h3>Deep Wheel Cleaning</h3><p>Your wheels take the brunt of the road - brake dust, road grime, salt, and grease all build up fast. Our <strong>Deep Wheel Cleaning</strong> service goes beyond a basic rinse to safely break down and remove stubborn buildup, leaving your rims, lug nuts, and barrels spotless.</p><p><strong>Pricing:</strong> $50 per wheel ($200 for full set of 4 wheels)</p>`
   };
 
   function showBubble(key) {
