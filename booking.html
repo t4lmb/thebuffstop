@@ -381,7 +381,6 @@
 
     /* RESPONSIVE DESIGN */
     @media (max-width: 1024px) {
-      /* Tablet adjustments */
       main {
         margin-top: 100px;
         padding: 1.5em;
@@ -401,7 +400,6 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile adjustments */
       header {
         padding: 0.8em 1em;
       }
@@ -493,7 +491,6 @@
     }
 
     @media (max-width: 480px) {
-      /* Small mobile adjustments */
       header {
         padding: 0.5em 0.8em;
       }
@@ -600,7 +597,10 @@
     </section>
 
     <div class="form-container">
-      <form id="booking-form" action="https://submit-form.com/x9zewaiyt" method="POST">
+      <form id="booking-form" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="booking">
+        <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
+        
         <div>
           <label for="name">Full Name</label>
           <input type="text" id="name" name="name" required placeholder="Enter your full name">
@@ -840,7 +840,7 @@
             }
           });
           labelEl.appendChild(checkboxEl);
-          labelEl.append(` ${addonName} (+$${addonPricingData[addonName][vehicleType]})`);
+          labelEl.append(` ${addonName} (+${addonPricingData[addonName][vehicleType]})`);
           addonsContainerEl.appendChild(labelEl);
         });
       } else {
@@ -865,12 +865,34 @@
       });
 
       totalDisplayEl.textContent = totalPrice.toFixed(2);
-      messageFieldEl.value = `Vehicle Type: ${vehicleType}\nPackage: ${selectedPackage}\nAdd-Ons: ${selectedAddonsList.join(', ')}\nEstimated Total: $${totalPrice.toFixed(2)}`;
+      messageFieldEl.value = `Vehicle Type: ${vehicleType}\nPackage: ${selectedPackage}\nAdd-Ons: ${selectedAddonsList.join(', ')}\nEstimated Total: ${totalPrice.toFixed(2)}`;
     }
 
     vehicleTypeEl.addEventListener('change', updatePackageOptions);
 
-    document.getElementById('booking-form').addEventListener('submit', calculateTotalPrice);
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      calculateTotalPrice();
+      
+      console.log('Form submitting with data:', new FormData(this));
+      console.log('Package value:', packageHiddenEl.value);
+      console.log('Vehicle type:', vehicleTypeEl.value);
+      
+      // Ensure required fields are filled
+      if (!packageHiddenEl.value) {
+        e.preventDefault();
+        alert('Please select a service package before submitting.');
+        return;
+      }
+      
+      // Show loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+      
+      // For Netlify forms, we can use normal form submission
+      // The form will redirect to a success page or show a success message
+    });
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
