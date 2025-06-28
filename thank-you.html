@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmed | The Buff Stop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    /* FIXED HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      transition: all 0.3s ease;
+    }
+    header img {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+    header img:hover {
+      transform: scale(1.05);
+    }
+
+    /* NAVIGATION */
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1em;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a,
+    nav ul li button {
+      background: transparent;
+      border: none;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0.8em 1.2em;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9em;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 8px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    nav ul li a:hover,
+    nav ul li button:hover {
+      background: #dc143c;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
+    }
+
+    /* DROPDOWN */
+    .dropdown-menu {
+      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      padding: 0.5em 0;
+      list-style: none;
+      min-width: 180px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      z-index: 1001;
+    }
+    nav ul li.show .dropdown-menu {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 0.8em 1.2em;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.85em;
+      font-weight: 600;
+      border-radius: 0;
+      margin: 0;
+    }
+    .dropdown-menu li a:hover {
+      background: #dc143c;
+      color: white;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 800px;
+      margin: 120px auto 2em;
+      padding: 2em 1em;
+      text-align: center;
+    }
+
+    /* SUCCESS SECTION */
+    .success-section {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      text-align: center;
+      padding: 4em 2em;
+      border-radius: 15px;
+      margin-bottom: 3em;
+      box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+    }
+    .success-section h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .success-section .checkmark {
+      font-size: 4em;
+      margin-bottom: 0.5em;
+    }
+    .success-section p {
+      font-size: 1.2em;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2em;
+    }
+
+    /* INFO CARDS */
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2em;
+      margin: 3em 0;
+    }
+    .info-card {
+      background: white;
+      padding: 2em;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    .info-card h3 {
+      color: #dc143c;
+      margin-bottom: 1em;
+    }
+    .info-card p {
+      line-height: 1.6;
+    }
+
+    /* BUTTONS */
+    .action-buttons {
+      display: flex;
+      gap: 1em;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 2em 0;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1em 2em;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-primary {
+      background: linear-gradient(45deg, #dc143c, #ff1744);
+      color: white;
+      box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
+    }
+    .btn-secondary {
+      background: linear-gradient(45deg, #333, #555);
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8em 1em;
+      }
+      header img {
+        height: 40px;
+      }
+      nav ul {
+        gap: 0.5em;
+      }
+      nav ul li a,
+      nav ul li button {
+        padding: 0.6em 0.8em;
+        font-size: 0.8em;
+      }
+      
+      main {
+        margin-top: 80px;
+        padding: 1em;
+      }
+      
+      .success-section {
+        padding: 2em 1em;
+      }
+      .success-section h1 {
+        font-size: 1.8em;
+      }
+      .success-section .checkmark {
+        font-size: 3em;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
+    <nav>
+      <ul>
+        <li><a href="index.html">HOME</a></li>
+        <li onclick="this.classList.toggle('show')">
+          <button type="button">SERVICES</button>
+          <ul class="dropdown-menu">
+            <li><a href="services.html">List of Services</a></li>
+            <li><a href="booking.html">Book an Appointment</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#gallery">GALLERY</a></li>
+        <li><a href="index.html#contact">CONTACT US</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="success-section">
+      <div class="checkmark">✅</div>
+      <h1>Booking Confirmed!</h1>
+      <p>Thank you for choosing The Buff Stop! We've received your booking request and will contact you within 24 hours to confirm your appointment details.</p>
+    </section>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <h3>What's Next?</h3>
+        <p>We'll review your request and contact you within 24 hours to confirm your appointment time and discuss any specific requirements for your vehicle.</p>
+      </div>
+      
+      <div class="info-card">
+        <h3>Questions?</h3>
+        <p>If you need to make changes or have questions about your booking, feel free to call us at <strong>506-343-5927</strong> or email us at.<strong>booking@thebuffstop.com</strong></p>
+      </div>
+      
+      <div class="info-card">
+        <h3>Preparation Tips</h3>
+        <p>Remove personal items from your vehicle and let us know about any specific areas of concern when we contact you.</p>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="index.html" class="btn btn-primary">Return Home</a>
+      <a href="booking.html" class="btn btn-secondary">Book Another Service</a>
+    </div>
+  </main>
+</body>
+</html>
