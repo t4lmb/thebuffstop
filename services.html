@@ -324,30 +324,33 @@
     }
 
     /* RESPONSIVE DESIGN */
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      /* Tablet adjustments */
       main {
         margin-top: 100px;
-        padding: 0.5em;
+        padding: 0.8em;
       }
       .hero-section {
-        padding: 2em 1em;
+        padding: 3em 1.5em;
       }
       .hero-section h1 {
-        font-size: 2.2em;
+        font-size: 2.4em;
       }
       .package-section {
-        padding: 1.5em;
+        padding: 2em 1.5em;
       }
       .package-table {
-        font-size: 0.9em;
+        font-size: 0.95em;
       }
-      .package-table th,
-      .package-table td {
-        padding: 0.8em 0.5em;
+    }
+
+    @media (max-width: 768px) {
+      /* Mobile adjustments */
+      header {
+        padding: 0.8em 1em;
       }
-      .info-bubble {
-        padding: 2em 1.5em;
-        width: 95%;
+      header img {
+        height: 40px;
       }
       nav ul {
         gap: 0.5em;
@@ -356,6 +359,132 @@
       nav ul li button {
         padding: 0.6em 0.8em;
         font-size: 0.8em;
+      }
+      .dropdown-menu {
+        min-width: 150px;
+        left: -50px;
+      }
+      
+      main {
+        margin-top: 80px;
+        padding: 0.5em;
+      }
+      
+      .hero-section {
+        padding: 2em 1em;
+      }
+      .hero-section h1 {
+        font-size: 2em;
+      }
+      .hero-section h3 {
+        font-size: 1.1em;
+      }
+      
+      .package-section {
+        padding: 1.5em 1em;
+        margin-bottom: 2em;
+      }
+      .package-section h2 {
+        font-size: 1.6em;
+      }
+      
+      .package-table {
+        font-size: 0.85em;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+      }
+      .package-table thead,
+      .package-table tbody,
+      .package-table tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+      .package-table th,
+      .package-table td {
+        padding: 0.8em 0.4em;
+        font-size: 0.8em;
+      }
+      
+      .clickable {
+        padding: 0.2em 0.4em;
+        font-size: 0.85em;
+      }
+      
+      .pdf-download {
+        margin-bottom: 2em;
+      }
+      .pdf-download a {
+        padding: 0.8em 1.5em;
+        font-size: 0.9em;
+      }
+      
+      .info-bubble {
+        padding: 2em 1.5em;
+        width: 95%;
+        max-width: 90vw;
+      }
+      .info-bubble h3 {
+        font-size: 1.3em;
+      }
+      .info-bubble p {
+        font-size: 0.9em;
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* Smaller mobile - horizontal scroll for tables */
+      .package-table {
+        min-width: 600px;
+      }
+      .package-section {
+        overflow-x: auto;
+        padding: 1.5em 0.5em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Small mobile adjustments */
+      header {
+        padding: 0.5em 0.8em;
+      }
+      nav ul li a,
+      nav ul li button {
+        padding: 0.5em 0.6em;
+        font-size: 0.7em;
+      }
+      
+      .hero-section {
+        padding: 1.5em 0.8em;
+      }
+      .hero-section h1 {
+        font-size: 1.6em;
+      }
+      .hero-section h3 {
+        font-size: 1em;
+      }
+      
+      .package-section {
+        padding: 1em 0.5em;
+      }
+      .package-section h2 {
+        font-size: 1.4em;
+      }
+      
+      .package-table th,
+      .package-table td {
+        padding: 0.6em 0.3em;
+        font-size: 0.75em;
+      }
+      
+      .info-bubble {
+        padding: 1.5em 1em;
+        width: 98%;
+      }
+      .close-btn {
+        top: 0.5em;
+        right: 0.8em;
       }
     }
   </style>
