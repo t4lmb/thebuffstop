@@ -381,25 +381,6 @@
     }
 
     /* RESPONSIVE DESIGN */
-    @media (max-width: 1024px) {
-      main {
-        margin-top: 100px;
-        padding: 1.5em;
-      }
-      .hero-section {
-        padding: 2.5em 1.5em;
-      }
-      .hero-section h2 {
-        font-size: 2.2em;
-      }
-      .form-container {
-        padding: 2.5em 2em;
-      }
-      .addons-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      }
-    }
-
     @media (max-width: 768px) {
       header {
         padding: 0.8em 1em;
@@ -443,31 +424,6 @@
         gap: 1.2em;
       }
       
-      label {
-        font-size: 0.95em;
-      }
-      
-      input, select, textarea {
-        padding: 0.9em;
-        font-size: 0.9em;
-      }
-      
-      .select-display {
-        padding: 0.9em;
-        font-size: 0.9em;
-      }
-      .select-option {
-        padding: 0.8em;
-      }
-      .package-pricing {
-        margin-top: 0.2em;
-      }
-      .original-price,
-      .discount-price,
-      .single-price {
-        font-size: 0.9em;
-      }
-      
       .addons-grid {
         grid-template-columns: 1fr;
         gap: 0.8em;
@@ -475,9 +431,6 @@
       .addons-grid label {
         padding: 0.8em;
         font-size: 0.9em;
-      }
-      .addons-grid input[type="checkbox"] {
-        transform: scale(1.2);
       }
       
       .total {
@@ -492,49 +445,12 @@
     }
 
     @media (max-width: 480px) {
-      header {
-        padding: 0.5em 0.8em;
-      }
-      nav ul li a,
-      nav ul li button {
-        padding: 0.5em 0.6em;
-        font-size: 0.7em;
-      }
-      
-      main {
-        padding: 0.8em;
-      }
-      
-      .hero-section {
-        padding: 1.5em 0.8em;
-      }
       .hero-section h2 {
         font-size: 1.5em;
-      }
-      .hero-section p {
-        font-size: 0.9em;
       }
       
       .form-container {
         padding: 1.5em 1em;
-      }
-      
-      input, select, textarea {
-        padding: 0.8em;
-        font-size: 0.85em;
-      }
-      
-      .select-display {
-        padding: 0.8em;
-        font-size: 0.85em;
-      }
-      .select-option {
-        padding: 0.7em;
-      }
-      .package-pricing {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2em;
       }
       
       .addons-grid label {
@@ -547,27 +463,6 @@
       .addons-grid input[type="checkbox"] {
         margin-right: 0;
         margin-bottom: 0.3em;
-      }
-      
-      .total {
-        padding: 1em;
-        font-size: 1em;
-      }
-      .total span {
-        font-size: 1.1em;
-      }
-      
-      button[type="submit"] {
-        padding: 0.9em 1.5em;
-        font-size: 0.9em;
-      }
-      
-      #addons-section {
-        padding: 1em;
-      }
-      
-      textarea {
-        min-height: 80px;
       }
     }
   </style>
@@ -598,8 +493,27 @@
     </section>
 
     <div class="form-container">
-      <form id="booking-form" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="booking">
+      <!-- STATIC HTML FORM FOR NETLIFY DETECTION (COMPLETELY HIDDEN) -->
+      <form name="booking" netlify netlify-honeypot="bot-field" style="display: none;">
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <select name="vehicle-type">
+          <option value="Sedan">Sedan</option>
+          <option value="SUV">SUV</option>
+          <option value="Truck">Truck</option>
+          <option value="Van">Van</option>
+        </select>
+        <input type="text" name="package" />
+        <input type="date" name="preferred-date" />
+        <input type="text" name="selected-addons" />
+        <textarea name="notes"></textarea>
+        <input type="text" name="estimated-total" />
+        <input type="text" name="booking-summary" />
+      </form>
+
+      <!-- VISIBLE FORM THAT USERS INTERACT WITH -->
+      <form id="booking-form">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
         
         <div>
@@ -633,7 +547,6 @@
           <div class="custom-select">
             <div class="select-display" id="package-display">Choose a service package</div>
             <div class="select-options" id="package-options"></div>
-            <input type="hidden" id="package" name="package" required>
           </div>
         </div>
 
@@ -656,11 +569,6 @@
           Estimated Total: $<span id="total">0.00</span>
         </div>
 
-        <!-- Hidden fields for Netlify form processing -->
-        <input type="hidden" name="selected-addons" id="selected-addons" value="">
-        <input type="hidden" name="estimated-total" id="estimated-total" value="">
-        <input type="hidden" name="booking-summary" id="booking-summary" value="">
-
         <button type="submit">Submit Booking Request</button>
       </form>
     </div>
@@ -671,7 +579,6 @@
     const vehicleTypeEl = document.getElementById('vehicle-type');
     const packageDisplayEl = document.getElementById('package-display');
     const packageOptionsEl = document.getElementById('package-options');
-    const packageHiddenEl = document.getElementById('package');
     const addonsContainerEl = document.getElementById('addons-container');
     const addonsSectionEl = document.getElementById('addons-section');
     const totalDisplayEl = document.getElementById('total');
@@ -742,11 +649,15 @@
       "Deep Wheel Cleaning": { Sedan: 200, SUV: 200, Truck: 200, Van: 200 }
     };
 
+    let selectedPackage = '';
+    let selectedPackagePrice = 0;
+
     function updatePackageOptions() {
       const vehicleType = vehicleTypeEl.value;
       packageOptionsEl.innerHTML = '';
       packageDisplayEl.textContent = 'Choose a service package';
-      packageHiddenEl.value = '';
+      selectedPackage = '';
+      selectedPackagePrice = 0;
       
       if (vehicleType) {
         for (const pkgName in packagePrices) {
@@ -757,6 +668,7 @@
           const optionDiv = document.createElement('div');
           optionDiv.className = 'select-option';
           optionDiv.dataset.value = pkgName;
+          optionDiv.dataset.price = currentPrice;
           
           const packageNameDiv = document.createElement('div');
           packageNameDiv.textContent = pkgName;
@@ -787,8 +699,9 @@
           optionDiv.appendChild(pricingDiv);
           
           optionDiv.addEventListener('click', function() {
-            packageDisplayEl.textContent = `${pkgName} (${currentPrice})`;
-            packageHiddenEl.value = pkgName;
+            selectedPackage = pkgName;
+            selectedPackagePrice = currentPrice;
+            packageDisplayEl.textContent = `${pkgName} ($${currentPrice})`;
             packageOptionsEl.classList.remove('active');
             packageDisplayEl.classList.remove('active');
             updateAddonOptions();
@@ -819,7 +732,6 @@
     });
 
     function updateAddonOptions() {
-      const selectedPackage = packageHiddenEl.value;
       const vehicleType = vehicleTypeEl.value;
       const availableAddonsList = packageAddons[selectedPackage] && packageAddons[selectedPackage][vehicleType] ? packageAddons[selectedPackage][vehicleType] : [];
       addonsContainerEl.innerHTML = '';
@@ -837,7 +749,6 @@
           checkboxEl.dataset.price = addonPricingData[addonName][vehicleType];
           checkboxEl.addEventListener('change', function() {
             calculateTotalPrice();
-            updateHiddenFields();
             if (this.checked) {
               labelEl.classList.add('checked');
             } else {
@@ -845,7 +756,7 @@
             }
           });
           labelEl.appendChild(checkboxEl);
-          labelEl.append(` ${addonName} (+${addonPricingData[addonName][vehicleType]})`);
+          labelEl.append(` ${addonName} (+$${addonPricingData[addonName][vehicleType]})`);
           addonsContainerEl.appendChild(labelEl);
         });
       } else {
@@ -855,59 +766,51 @@
     }
 
     function calculateTotalPrice() {
-      const vehicleType = vehicleTypeEl.value;
-      const selectedPackage = packageHiddenEl.value;
-      let totalPrice = 0;
-
-      if (vehicleType && selectedPackage && packagePrices[selectedPackage]) {
-        totalPrice = packagePrices[selectedPackage][vehicleType];
-      }
+      let totalPrice = selectedPackagePrice;
 
       addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
         totalPrice += parseFloat(checkbox.dataset.price);
       });
 
       totalDisplayEl.textContent = totalPrice.toFixed(2);
-      updateHiddenFields();
     }
 
-    function updateHiddenFields() {
-      const vehicleType = vehicleTypeEl.value;
-      const selectedPackage = packageHiddenEl.value;
+    function getSelectedAddons() {
       const selectedAddons = [];
-      const total = totalDisplayEl.textContent;
-
-      // Get selected add-ons
       addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
         selectedAddons.push(`${checkbox.value} (+${checkbox.dataset.price})`);
       });
-
-      // Update hidden fields for Netlify
-      document.getElementById('selected-addons').value = selectedAddons.join(', ');
-      document.getElementById('estimated-total').value = total;
-      
-      // Create booking summary
-      let summary = `Vehicle: ${vehicleType}\nPackage: ${selectedPackage}`;
-      if (selectedAddons.length > 0) {
-        summary += `\nAdd-ons: ${selectedAddons.join(', ')}`;
-      }
-      summary += `\nEstimated Total: ${total}`;
-      
-      document.getElementById('booking-summary').value = summary;
+      return selectedAddons;
     }
 
     vehicleTypeEl.addEventListener('change', updatePackageOptions);
 
     document.getElementById('booking-form').addEventListener('submit', function(e) {
-      // Ensure required fields are filled
-      if (!packageHiddenEl.value) {
-        e.preventDefault();
+      e.preventDefault();
+      
+      // Validate required fields
+      if (!selectedPackage) {
         alert('Please select a service package before submitting.');
         return;
       }
       
-      // Update hidden fields one final time
-      updateHiddenFields();
+      // Get form data
+      const formData = new FormData(this);
+      const selectedAddons = getSelectedAddons();
+      const total = totalDisplayEl.textContent;
+      
+      // Create booking summary
+      const bookingSummary = `
+Name: ${formData.get('name')}
+Email: ${formData.get('email')}
+Phone: ${formData.get('phone')}
+Vehicle Type: ${formData.get('vehicle-type')}
+Service Package: ${selectedPackage} (${selectedPackagePrice})
+Preferred Date: ${formData.get('preferred-date')}
+Add-ons: ${selectedAddons.length > 0 ? selectedAddons.join(', ') : 'None'}
+Additional Notes: ${formData.get('notes') || 'None'}
+Estimated Total: ${total}
+      `.trim();
       
       // Show loading state
       const submitBtn = this.querySelector('button[type="submit"]');
@@ -915,18 +818,53 @@
       submitBtn.textContent = 'Submitting...';
       submitBtn.disabled = true;
       
-      console.log('Form data being submitted:');
-      console.log('Package:', packageHiddenEl.value);
-      console.log('Vehicle type:', vehicleTypeEl.value);
-      console.log('Selected addons:', document.getElementById('selected-addons').value);
-      console.log('Total:', document.getElementById('estimated-total').value);
-      console.log('Summary:', document.getElementById('booking-summary').value);
+      // Submit to Netlify
+      fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          'form-name': 'booking',
+          'name': formData.get('name'),
+          'email': formData.get('email'),
+          'phone': formData.get('phone'),
+          'vehicle-type': formData.get('vehicle-type'),
+          'package': `${selectedPackage} - ${formData.get('vehicle-type')} (${selectedPackagePrice})`,
+          'preferred-date': formData.get('preferred-date'),
+          'selected-addons': selectedAddons.join(', ') || 'None',
+          'notes': formData.get('notes') || 'None',
+          'estimated-total': `${total}`,
+          'booking-summary': bookingSummary
+        })
+      }).then(() => {
+        alert('🎉 Thank you! Your booking request has been submitted successfully. We\'ll get back to you within 24 hours to confirm your appointment details.');
+        
+        // Reset form
+        this.reset();
+        selectedPackage = '';
+        selectedPackagePrice = 0;
+        packageDisplayEl.textContent = 'Choose a service package';
+        addonsSectionEl.style.display = 'none';
+        totalDisplayEl.textContent = '0.00';
+        
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        
+      }).catch((error) => {
+        console.error('Error:', error);
+        alert('There was an error submitting your form. Please try again or contact us directly at your business phone/email.');
+        
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      });
     });
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').setAttribute('min', today);
 
+    // Initialize
     updatePackageOptions();
   </script>
 </body>
