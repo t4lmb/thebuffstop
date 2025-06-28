@@ -302,12 +302,6 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
     }
-    button[type="submit"]:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
 
     /* ADD-ONS SECTION */
     #addons-section {
@@ -493,27 +487,8 @@
     </section>
 
     <div class="form-container">
-      <!-- STATIC HTML FORM FOR NETLIFY DETECTION (COMPLETELY HIDDEN) -->
-      <form name="booking" netlify netlify-honeypot="bot-field" style="display: none;">
-        <input type="text" name="name" />
-        <input type="email" name="email" />
-        <input type="tel" name="phone" />
-        <select name="vehicle-type">
-          <option value="Sedan">Sedan</option>
-          <option value="SUV">SUV</option>
-          <option value="Truck">Truck</option>
-          <option value="Van">Van</option>
-        </select>
-        <input type="text" name="package" />
-        <input type="date" name="preferred-date" />
-        <input type="text" name="selected-addons" />
-        <textarea name="notes"></textarea>
-        <input type="text" name="estimated-total" />
-        <input type="text" name="booking-summary" />
-      </form>
-
-      <!-- VISIBLE FORM THAT USERS INTERACT WITH -->
-      <form id="booking-form">
+      <form name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="booking">
         <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
         
         <div>
@@ -547,6 +522,7 @@
           <div class="custom-select">
             <div class="select-display" id="package-display">Choose a service package</div>
             <div class="select-options" id="package-options"></div>
+            <input type="hidden" id="package" name="package" required>
           </div>
         </div>
 
@@ -569,6 +545,11 @@
           Estimated Total: $<span id="total">0.00</span>
         </div>
 
+        <!-- Hidden fields to capture dynamic data -->
+        <input type="hidden" name="selected-addons" id="selected-addons">
+        <input type="hidden" name="estimated-total" id="estimated-total">
+        <input type="hidden" name="booking-summary" id="booking-summary">
+
         <button type="submit">Submit Booking Request</button>
       </form>
     </div>
@@ -579,6 +560,7 @@
     const vehicleTypeEl = document.getElementById('vehicle-type');
     const packageDisplayEl = document.getElementById('package-display');
     const packageOptionsEl = document.getElementById('package-options');
+    const packageHiddenEl = document.getElementById('package');
     const addonsContainerEl = document.getElementById('addons-container');
     const addonsSectionEl = document.getElementById('addons-section');
     const totalDisplayEl = document.getElementById('total');
@@ -702,6 +684,7 @@
             selectedPackage = pkgName;
             selectedPackagePrice = currentPrice;
             packageDisplayEl.textContent = `${pkgName} ($${currentPrice})`;
+            packageHiddenEl.value = `${pkgName} - ${vehicleType} ($${currentPrice})`;
             packageOptionsEl.classList.remove('active');
             packageDisplayEl.classList.remove('active');
             updateAddonOptions();
@@ -749,6 +732,7 @@
           checkboxEl.dataset.price = addonPricingData[addonName][vehicleType];
           checkboxEl.addEventListener('change', function() {
             calculateTotalPrice();
+            updateHiddenFields();
             if (this.checked) {
               labelEl.classList.add('checked');
             } else {
@@ -756,7 +740,7 @@
             }
           });
           labelEl.appendChild(checkboxEl);
-          labelEl.append(` ${addonName} (+$${addonPricingData[addonName][vehicleType]})`);
+          labelEl.append(` ${addonName} (+${addonPricingData[addonName][vehicleType]})`);
           addonsContainerEl.appendChild(labelEl);
         });
       } else {
@@ -773,92 +757,34 @@
       });
 
       totalDisplayEl.textContent = totalPrice.toFixed(2);
+      updateHiddenFields();
     }
 
-    function getSelectedAddons() {
+    function updateHiddenFields() {
       const selectedAddons = [];
       addonsContainerEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
         selectedAddons.push(`${checkbox.value} (+${checkbox.dataset.price})`);
       });
-      return selectedAddons;
+
+      const total = totalDisplayEl.textContent;
+      const vehicleType = vehicleTypeEl.value;
+
+      // Update hidden fields
+      document.getElementById('selected-addons').value = selectedAddons.join(', ') || 'None';
+      document.getElementById('estimated-total').value = `${total}`;
+      
+      // Create detailed booking summary
+      const bookingSummary = `
+Vehicle: ${vehicleType}
+Package: ${selectedPackage} (${selectedPackagePrice})
+Add-ons: ${selectedAddons.join(', ') || 'None'}
+Total: ${total}
+      `.trim();
+      
+      document.getElementById('booking-summary').value = bookingSummary;
     }
 
     vehicleTypeEl.addEventListener('change', updatePackageOptions);
-
-    document.getElementById('booking-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Validate required fields
-      if (!selectedPackage) {
-        alert('Please select a service package before submitting.');
-        return;
-      }
-      
-      // Get form data
-      const formData = new FormData(this);
-      const selectedAddons = getSelectedAddons();
-      const total = totalDisplayEl.textContent;
-      
-      // Create booking summary
-      const bookingSummary = `
-Name: ${formData.get('name')}
-Email: ${formData.get('email')}
-Phone: ${formData.get('phone')}
-Vehicle Type: ${formData.get('vehicle-type')}
-Service Package: ${selectedPackage} (${selectedPackagePrice})
-Preferred Date: ${formData.get('preferred-date')}
-Add-ons: ${selectedAddons.length > 0 ? selectedAddons.join(', ') : 'None'}
-Additional Notes: ${formData.get('notes') || 'None'}
-Estimated Total: ${total}
-      `.trim();
-      
-      // Show loading state
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Submitting...';
-      submitBtn.disabled = true;
-      
-      // Submit to Netlify
-      fetch('/', {
-        method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          'form-name': 'booking',
-          'name': formData.get('name'),
-          'email': formData.get('email'),
-          'phone': formData.get('phone'),
-          'vehicle-type': formData.get('vehicle-type'),
-          'package': `${selectedPackage} - ${formData.get('vehicle-type')} (${selectedPackagePrice})`,
-          'preferred-date': formData.get('preferred-date'),
-          'selected-addons': selectedAddons.join(', ') || 'None',
-          'notes': formData.get('notes') || 'None',
-          'estimated-total': `${total}`,
-          'booking-summary': bookingSummary
-        })
-      }).then(() => {
-        alert('🎉 Thank you! Your booking request has been submitted successfully. We\'ll get back to you within 24 hours to confirm your appointment details.');
-        
-        // Reset form
-        this.reset();
-        selectedPackage = '';
-        selectedPackagePrice = 0;
-        packageDisplayEl.textContent = 'Choose a service package';
-        addonsSectionEl.style.display = 'none';
-        totalDisplayEl.textContent = '0.00';
-        
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-        
-      }).catch((error) => {
-        console.error('Error:', error);
-        alert('There was an error submitting your form. Please try again or contact us directly at your business phone/email.');
-        
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      });
-    });
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
