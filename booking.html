@@ -380,22 +380,33 @@
     }
 
     /* RESPONSIVE DESIGN */
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      /* Tablet adjustments */
       main {
         margin-top: 100px;
-        padding: 1em;
+        padding: 1.5em;
       }
       .hero-section {
-        padding: 2em 1em;
+        padding: 2.5em 1.5em;
       }
       .hero-section h2 {
-        font-size: 2em;
+        font-size: 2.2em;
       }
       .form-container {
-        padding: 2em 1.5em;
+        padding: 2.5em 2em;
       }
       .addons-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Mobile adjustments */
+      header {
+        padding: 0.8em 1em;
+      }
+      header img {
+        height: 40px;
       }
       nav ul {
         gap: 0.5em;
@@ -405,14 +416,160 @@
         padding: 0.6em 0.8em;
         font-size: 0.8em;
       }
+      .dropdown-menu {
+        min-width: 150px;
+        left: -50px;
+      }
+      
+      main {
+        margin-top: 80px;
+        padding: 1em;
+      }
+      
+      .hero-section {
+        padding: 2em 1em;
+      }
+      .hero-section h2 {
+        font-size: 1.8em;
+      }
+      .hero-section p {
+        font-size: 1em;
+      }
+      
+      .form-container {
+        padding: 2em 1.5em;
+      }
+      
+      form {
+        gap: 1.2em;
+      }
+      
+      label {
+        font-size: 0.95em;
+      }
+      
+      input, select, textarea {
+        padding: 0.9em;
+        font-size: 0.9em;
+      }
+      
+      .select-display {
+        padding: 0.9em;
+        font-size: 0.9em;
+      }
+      .select-option {
+        padding: 0.8em;
+      }
+      .package-pricing {
+        margin-top: 0.2em;
+      }
+      .original-price,
+      .discount-price,
+      .single-price {
+        font-size: 0.9em;
+      }
+      
+      .addons-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8em;
+      }
+      .addons-grid label {
+        padding: 0.8em;
+        font-size: 0.9em;
+      }
+      .addons-grid input[type="checkbox"] {
+        transform: scale(1.2);
+      }
+      
+      .total {
+        padding: 1.2em;
+        font-size: 1.1em;
+      }
+      
+      button[type="submit"] {
+        padding: 1em 1.8em;
+        font-size: 1em;
+      }
     }
 
     @media (max-width: 480px) {
+      /* Small mobile adjustments */
+      header {
+        padding: 0.5em 0.8em;
+      }
+      nav ul li a,
+      nav ul li button {
+        padding: 0.5em 0.6em;
+        font-size: 0.7em;
+      }
+      
+      main {
+        padding: 0.8em;
+      }
+      
+      .hero-section {
+        padding: 1.5em 0.8em;
+      }
+      .hero-section h2 {
+        font-size: 1.5em;
+      }
+      .hero-section p {
+        font-size: 0.9em;
+      }
+      
       .form-container {
         padding: 1.5em 1em;
       }
+      
       input, select, textarea {
         padding: 0.8em;
+        font-size: 0.85em;
+      }
+      
+      .select-display {
+        padding: 0.8em;
+        font-size: 0.85em;
+      }
+      .select-option {
+        padding: 0.7em;
+      }
+      .package-pricing {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2em;
+      }
+      
+      .addons-grid label {
+        padding: 0.7em;
+        font-size: 0.85em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+      }
+      .addons-grid input[type="checkbox"] {
+        margin-right: 0;
+        margin-bottom: 0.3em;
+      }
+      
+      .total {
+        padding: 1em;
+        font-size: 1em;
+      }
+      .total span {
+        font-size: 1.1em;
+      }
+      
+      button[type="submit"] {
+        padding: 0.9em 1.5em;
+        font-size: 0.9em;
+      }
+      
+      #addons-section {
+        padding: 1em;
+      }
+      
+      textarea {
+        min-height: 80px;
       }
     }
   </style>
