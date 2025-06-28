@@ -7,80 +7,98 @@
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-
-        html {
+    html {
       scroll-behavior: smooth;
     }
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #fff;
-      color: #111;
+      background-color: #f4f4f4;
+      color: #333;
     }
+
+    /* FIXED HEADER - CONSISTENT WITH HOMEPAGE */
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
       z-index: 1000;
-      background: #fff;
-      padding: 1em 2em;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 1em 2em;
+      transition: all 0.3s ease;
     }
     header img {
       height: 50px;
+      transition: transform 0.3s ease;
     }
+    header img:hover {
+      transform: scale(1.05);
+    }
+
+    /* NAVIGATION - CONSISTENT WITH HOMEPAGE */
     nav ul {
       list-style: none;
       display: flex;
-      gap: 1.5em;
+      gap: 1em;
       font-weight: 600;
       text-transform: uppercase;
       font-size: 0.9em;
       margin: 0;
       padding: 0;
+      align-items: center;
     }
     nav ul li {
       position: relative;
-        }
+    }
     nav ul li a,
     nav ul li button {
-      background: none;
+      background: transparent;
       border: none;
-      color: #333;  display: inline-block;
-      vertical-align: middle;
+      color: #333;
       text-decoration: none;
       cursor: pointer;
-      padding: 0.5em 1em;
+      padding: 0.8em 1.2em;
       transition: all 0.3s ease;
       font-family: 'Montserrat', sans-serif;
-      font-size: 1em;
-      font-weight: 1000;
+      font-size: 0.9em;
+      font-weight: 700;
       text-transform: uppercase;
+      border-radius: 8px;
       display: inline-block;
-      vertical-align: middle;
+      white-space: nowrap;
     }
     nav ul li a:hover,
     nav ul li button:hover {
       background: #dc143c;
       color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
     }
 
-.dropdown-menu {
+    /* DROPDOWN - CONSISTENT WITH HOMEPAGE */
+    .dropdown-menu {
       display: none;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: all 0.3s ease;
       position: absolute;
       top: 100%;
       left: 0;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      padding: 0.5em 1em;
+      background: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      padding: 0.5em 0;
       list-style: none;
       min-width: 180px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      z-index: 1001;
     }
     nav ul li.show .dropdown-menu {
       display: block;
@@ -89,140 +107,256 @@
     }
     .dropdown-menu li a {
       display: block;
-      padding: 0.5em 0;
+      padding: 0.8em 1.2em;
       color: #333;
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: all 0.3s ease;
       font-size: 0.85em;
+      font-weight: 600;
+      border-radius: 0;
+      margin: 0;
     }
     .dropdown-menu li a:hover {
-      color: #dc143c;
+      background: #dc143c;
+      color: white;
+      transform: none;
+      box-shadow: none;
     }
 
-.banner {
-      display: flex;
-      background-color: black;
-      color: white;
-      align-items: center;
-      justify-content: ceter;
-      padding-right: 2em;
-    }
-    .banner img {
-      max-width: 50%;
-      height: auto;
-    }
-    .banner-text {
-      text-align: right;
-      max-width: 100%;
-      margin-left: 2em;
-    }
-    .banner-text h1 {
-      font-size: 2em;
-      color: white;
-    }
-    .banner-text p {
-      font-size: 1.1em;
-      color: #ccc;
-    }
-    .banner-text a {
-      display: inline-block;
-      margin-top: 1em;
-      background-color: #e5093f;
-      color: white;
-      padding: 0.75em 1.5em;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 4px;
-    }
+    /* MAIN CONTENT */
     main {
-      max-width: 1000px;
-      margin: 2em auto;
+      max-width: 1200px;
+      margin: 120px auto 2em;
       padding: 1em;
     }
-    h1 {
+
+    /* HERO SECTION */
+    .hero-section {
+      background: linear-gradient(135deg, #dc143c, #ff1744);
+      color: white;
       text-align: center;
-      color: #dc143c;
+      padding: 4em 2em;
+      border-radius: 15px;
+      margin-bottom: 3em;
+      box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
     }
-    h3 {
-      text-align: center;
-      color: #000000;
+    .hero-section h1 {
+      font-size: 2.8em;
+      margin-bottom: 0.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
+    .hero-section h3 {
+      font-size: 1.3em;
+      font-weight: 400;
+      margin-bottom: 2em;
+      opacity: 0.9;
+    }
+
+    /* PDF DOWNLOAD */
     .pdf-download {
       text-align: center;
-      margin-bottom: 2em;
+      margin-bottom: 3em;
     }
     .pdf-download a {
-      background-color: #dc143c;
+      background: linear-gradient(45deg, #333, #555);
       color: #fff;
       text-decoration: none;
-      padding: 0.75em 1.5em;
-      border-radius: 5px;
+      padding: 1em 2em;
+      border-radius: 50px;
       font-weight: bold;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .pdf-download a:hover {
-      background-color: #b01030;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, #555, #777);
     }
+
+    /* PACKAGE SECTIONS */
     .package-section {
+      background: white;
       margin-bottom: 3em;
+      border-radius: 15px;
+      padding: 2.5em;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .package-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
     }
     .package-section h2 {
       color: #dc143c;
-      border-bottom: 2px solid #dc143c;
-      padding-bottom: 0.3em;
-      margin-bottom: 1em;
+      font-size: 2em;
+      margin-bottom: 1.5em;
+      text-align: center;
     }
+
+    /* IMPROVED TABLES */
     .package-table {
       width: 100%;
       border-collapse: collapse;
-    }
-    .package-table th, .package-table td {
-      border: 1px solid #ccc;
-      padding: 0.75em;
-      text-align: center;
+      margin-top: 1.5em;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .package-table th {
-      background-color: #dc143c;
+      background: linear-gradient(135deg, #dc143c, #ff1744);
       color: white;
+      padding: 1.2em 1em;
+      text-align: center;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9em;
     }
-    .info-bubble {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 2em;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 2000;
-      max-width: 600px;
-      display: none;
-      overflow-y: auto;
-      max-height: 80vh;
+    .package-table td {
+      padding: 1em;
+      text-align: center;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
     }
+    .package-table tr:hover td {
+      background: #f8f9fa;
+    }
+    .package-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* CLICKABLE SERVICE NAMES */
+    .clickable {
+      cursor: pointer;
+      color: #dc143c;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 0.3em 0.6em;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .clickable:hover {
+      background: #dc143c;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* PRICE CELLS */
+    .package-table td:not(:first-child) {
+      font-weight: 600;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    /* INFO BUBBLE MODAL */
     .overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.6);
+      background-color: rgba(0,0,0,0.7);
       z-index: 1500;
       display: none;
+      backdrop-filter: blur(5px);
+    }
+    .info-bubble {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2.5em;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      z-index: 2000;
+      max-width: 600px;
+      width: 90%;
+      display: none;
+      overflow-y: auto;
+      max-height: 80vh;
     }
     .close-btn {
       position: absolute;
-      top: 0.5em;
-      right: 0.8em;
-      font-size: 1.2em;
+      top: 1em;
+      right: 1.2em;
+      font-size: 1.5em;
       font-weight: bold;
       cursor: pointer;
       color: #dc143c;
+      transition: all 0.3s ease;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .clickable {
-      cursor: pointer;
+    .close-btn:hover {
+      background: #dc143c;
+      color: white;
+    }
+
+    /* BUBBLE CONTENT STYLING */
+    .info-bubble h3 {
       color: #dc143c;
-      font-weight: bold;
+      margin-bottom: 1em;
+      font-size: 1.5em;
+    }
+    .info-bubble p {
+      line-height: 1.6;
+      margin-bottom: 1em;
+      color: #555;
+    }
+    .info-bubble ul {
+      margin: 1em 0;
+      padding-left: 1.5em;
+    }
+    .info-bubble li {
+      margin-bottom: 0.5em;
+      line-height: 1.6;
+    }
+    .info-bubble strong {
+      color: #333;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      main {
+        margin-top: 100px;
+        padding: 0.5em;
+      }
+      .hero-section {
+        padding: 2em 1em;
+      }
+      .hero-section h1 {
+        font-size: 2.2em;
+      }
+      .package-section {
+        padding: 1.5em;
+      }
+      .package-table {
+        font-size: 0.9em;
+      }
+      .package-table th,
+      .package-table td {
+        padding: 0.8em 0.5em;
+      }
+      .info-bubble {
+        padding: 2em 1.5em;
+        width: 95%;
+      }
+      nav ul {
+        gap: 0.5em;
+      }
+      nav ul li a,
+      nav ul li button {
+        padding: 0.6em 0.8em;
+        font-size: 0.8em;
+      }
     }
   </style>
 </head>
@@ -250,9 +384,12 @@
       </ul>
     </nav>
   </header>
+
   <main>
-    <h1>Packages Breakdown</h1>
-    <h3>Click on a service to view more information!</h3>
+    <section class="hero-section">
+      <h1>Packages Breakdown</h1>
+      <h3>Click on a service to view more information!</h3>
+    </section>
 
     <div class="package-section">
       <h2>Full Service Interior</h2>
@@ -266,7 +403,6 @@
           <tr><td><span class="clickable" onclick="showBubble('windowDefog')">Interior Window Defog Application</span></td><td>$25</td><td>$25</td><td>$25</td><td>$25</td></tr>
           <tr><td><span class="clickable" onclick="showBubble('ozoneTreatment')">Ozone Deodorizer Treatment</span></td><td>$125</td><td>$125</td><td>$125</td><td>$125</td></tr>
           <tr><td><span class="clickable" onclick="showBubble('deepWheel')">Deep Wheel Cleaning</span></td><td>$30</td><td>$30</td><td>$30</td><td>$30</td></tr>
-        
         </tbody>
       </table>
     </div>
@@ -287,7 +423,7 @@
     </div>
 
     <div class="package-section">
-      <h2>À La Carte Services</h2>
+      <h2>Car Presale Packages</h2>
       <table class="package-table">
         <thead><tr><th>Service</th><th>Flat Rate</th></tr></thead>
         <tbody>
@@ -300,13 +436,13 @@
     </div>
 
     <div class="pdf-download">
-      <a href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Package%20Breakdowns.pdf" download>Download PDF</a>
+      <a href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Package%20Breakdowns.pdf" download>📄 Download Full PDF Guide</a>
     </div>
   </main>
 
 <script>
   const bubbleText = {
-    basicInterior: `<h3>Basic Interior</h3><p><strong>Our Basic Interior Package offers a full reset to your car’s cabin.</strong></p><ul><li>Vacuum carpets, seats, trunk/cargo</li><li>Wipe down of dash, door panels, consoles</li><li>Interior windows cleaned</li><li>Floor mats scrubbed and extracted</li></ul><p><strong>Why it works:</strong> Refreshes surfaces, removes loose dirt/debris, and keeps the cabin inviting.</p><p><strong>Perfect for:</strong> Routine cleans, leased vehicle upkeep, vehicles with low/moderate interior soil.</p>`,
+    basicInterior: `<h3>Basic Interior</h3><p><strong>Our Basic Interior Package offers a full reset to your car's cabin.</strong></p><ul><li>Vacuum carpets, seats, trunk/cargo</li><li>Wipe down of dash, door panels, consoles</li><li>Interior windows cleaned</li><li>Floor mats scrubbed and extracted</li></ul><p><strong>Why it works:</strong> Refreshes surfaces, removes loose dirt/debris, and keeps the cabin inviting.</p><p><strong>Perfect for:</strong> Routine cleans, leased vehicle upkeep, vehicles with low/moderate interior soil.</p>`,
 
     interiorSteam: `<h3>Interior Steam Sanitization</h3><p>High-temperature steam cleans and disinfects all hard surfaces and air vents. Eliminates bacteria, allergens, and odors.</p><p><strong>Ideal for:</strong> allergy sufferers, families with children or pets, and post-winter deep cleans.</p>`,
 
@@ -318,7 +454,7 @@
 
     ozoneTreatment: `<h3>Ozone Deodorizer Treatment</h3><p>Powerful ozone gas neutralizes deep-seated odors including smoke, mold, food, and pet smells. Applied post-cleaning.</p><p><strong>Ideal for:</strong> pre-sale prep or strong unwanted odors.</p>`,
 
-    basicExterior: `<h3>Basic Exterior</h3><p><strong>Our Basic Exterior Detail is the perfect way to maintain your vehicle’s shine and protection without the time or cost of a full correction.</strong></p><ul><li>Pre-Foam Soak – Loosens dirt and grime safely</li><li>Gentle Hand Wash – Microfiber mitts and pH-balanced soap</li><li>Sealant Application – Boosts shine and paint protection</li><li>Hand Drying – Scratch-free microfiber finish</li><li>Tire Cleaning & Shine</li><li>Streak-Free Window Cleaning</li></ul><p><strong>Why it works:</strong> Enhances gloss, protects from grime/UV, great between deep details.</p><p><strong>Perfect for:</strong> Monthly upkeep, post-road trip refresh.</p>`,
+    basicExterior: `<h3>Basic Exterior</h3><p><strong>Our Basic Exterior Detail is the perfect way to maintain your vehicle's shine and protection without the time or cost of a full correction.</strong></p><ul><li>Pre-Foam Soak – Loosens dirt and grime safely</li><li>Gentle Hand Wash – Microfiber mitts and pH-balanced soap</li><li>Sealant Application – Boosts shine and paint protection</li><li>Hand Drying – Scratch-free microfiber finish</li><li>Tire Cleaning & Shine</li><li>Streak-Free Window Cleaning</li></ul><p><strong>Why it works:</strong> Enhances gloss, protects from grime/UV, great between deep details.</p><p><strong>Perfect for:</strong> Monthly upkeep, post-road trip refresh.</p>`,
 
     clayBar: `<h3>Clay Bar Decontamination</h3><p>Removes embedded contaminants like tar, tree sap, and industrial fallout. Restores smooth paint feel before polishing or sealing.</p>`,
 
@@ -348,6 +484,9 @@
     document.getElementById('infoBubble').style.display = 'none';
     document.getElementById('overlay').style.display = 'none';
   }
+
+  // Close bubble when clicking overlay
+  document.getElementById('overlay').addEventListener('click', closeBubble);
 </script>
 
 </body>
