@@ -732,7 +732,7 @@
           checkboxEl.dataset.price = addonPricingData[addonName][vehicleType];
           checkboxEl.addEventListener('change', function() {
             calculateTotalPrice();
-            updateHiddenFields();
+            updateSummaryFields();
             if (this.checked) {
               labelEl.classList.add('checked');
             } else {
