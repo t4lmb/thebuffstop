@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -679,12 +680,12 @@
     <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
     <nav>
       <ul>
-        <li><a href="index.html">HOME</a></li>
+        <li><a href='/'>HOME</a></li>
         <li onclick="this.classList.toggle('show')">
           <button type="button">SERVICES</button>
           <ul class="dropdown-menu">
-            <li><a href="services.html">List of Services</a></li>
-            <li><a href="booking.html">Book an Appointment</a></li>
+            <li><a href='/services'>List of Services</a></li>
+            <li><a href='/booking'>Book an Appointment</a></li>
           </ul>
         </li>
         <li><a href="#gallery">GALLERY</a></li>
@@ -699,7 +700,7 @@
       <div class="banner-text">
         <h1>Premium Car Detailing Services</h1>
         <p>Revive your vehicle's shine with our expert detailing services. Professional quality, attention to detail, and results that speak for themselves.</p>
-        <a href="booking.html">Book Your Detail Now</a>
+        <a href='/booking'>Book Your Detail Now</a>
       </div>
     </section>
 
@@ -726,13 +727,13 @@
       </div>
     </section>
 
-    <section class="contact-section" id="contact">
+<section class="contact-section" id="contact">
       <h2>Contact Us</h2>
       <p>Have any questions? We'd love to hear from you!</p>
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea rows="5" placeholder="Tell us about your vehicle and what you need..." required></textarea>
+      <form id="contact-form">
+        <input type="text" id="contact-name" placeholder="Your Name" required>
+        <input type="email" id="contact-email" placeholder="Your Email" required>
+        <textarea id="contact-message" rows="5" placeholder="Tell us about your vehicle and what you need..." required></textarea>
         <div class="attachment-row" onclick="document.getElementById('file-input').click();">
           <span>Attach Files</span>
           <span id="attachment-count">Attachments (0)</span>
@@ -810,6 +811,52 @@
       filesArray.forEach(file => dt.items.add(file));
       fileInput.files = dt.files;
     }
+
+    // Contact form submission handler
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+      
+      if (!name || !email || !message) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
+      // Create email content
+      const subject = encodeURIComponent(`Contact Form - Message from ${name}`);
+      
+      let body = `Hello,\n\nYou have received a new message from your website contact form:\n\n`;
+      body += `Name: ${name}\n`;
+      body += `Email: ${email}\n`;
+      body += `Message:\n${message}\n\n`;
+      
+      if (filesArray.length > 0) {
+        body += `Note: The customer tried to attach ${filesArray.length} file(s):\n`;
+        filesArray.forEach(file => {
+          body += `- ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n`;
+        });
+        body += `\nPlease ask them to send the files separately or provide an alternative way to share them.\n\n`;
+      }
+      
+      body += `Please reply directly to: ${email}\n\nBest regards,\nWebsite Contact Form`;
+      
+      const encodedBody = encodeURIComponent(body);
+      
+      // Open default email client
+      const mailtoLink = `mailto:majid@thebuffstop.com?subject=${subject}&body=${encodedBody}`;
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      alert('Your email client should now open with the message pre-filled. Please send the email to complete your contact request.');
+      
+      // Optional: Reset form
+      this.reset();
+      filesArray = [];
+      updateFileDisplay();
+    });
   </script>
 </body>
 </html>
