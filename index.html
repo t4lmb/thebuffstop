@@ -1,862 +1,963 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Buff Stop</title>
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Buff Stop</title>
+    <link rel="icon" type="image/png"
+        href="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
 
-    /* FIXED HEADER */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1em 2em;
-      transition: all 0.3s ease;
-    }
-    header img {
-      height: 50px;
-      transition: transform 0.3s ease;
-    }
-    header img:hover {
-      transform: scale(1.05);
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-    /* NAVIGATION */
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1em;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.9em;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-    }
-    nav ul li {
-      position: relative;
-    }
-    nav ul li a,
-    nav ul li button {
-      background: transparent;
-      border: none;
-      color: #333;
-      text-decoration: none;
-      cursor: pointer;
-      padding: 0.8em 1.2em;
-      transition: all 0.3s ease;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.9em;
-      font-weight: 700;
-      text-transform: uppercase;
-      border-radius: 8px;
-      display: inline-block;
-      white-space: nowrap;
-    }
-    nav ul li a:hover,
-    nav ul li button:hover {
-      background: #dc143c;
-      color: white;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
-    }
+        /* FIXED HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em 2em;
+            transition: all 0.3s ease;
+        }
 
-    /* DROPDOWN */
-    .dropdown-menu {
-      display: none;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      padding: 0.5em 0;
-      list-style: none;
-      min-width: 180px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      z-index: 1001;
-    }
-    nav ul li.show .dropdown-menu {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-    .dropdown-menu li a {
-      display: block;
-      padding: 0.8em 1.2em;
-      color: #333;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 0.85em;
-      font-weight: 600;
-      border-radius: 0;
-      margin: 0;
-    }
-    .dropdown-menu li a:hover {
-      background: #dc143c;
-      color: white;
-      transform: none;
-      box-shadow: none;
-    }
+        header img {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
 
-    /* MAIN CONTENT */
-    main {
-      margin-top: 80px;
-    }
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 2em 1em;
-    }
+        header img:hover {
+            transform: scale(1.05);
+        }
 
-    /* BANNER - FIXED */
-    .banner {
-      display: flex;
-      background: linear-gradient(135deg, #000000, #1a1a1a);
-      color: white;
-      align-items: center;
-      justify-content: center;
-      padding: 2em;
-      min-height: 500px;
-      position: relative;
-      overflow: hidden;
-    }
-    .banner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, rgba(220, 20, 60, 0.1), rgba(255, 23, 68, 0.1));
-      z-index: 1;
-    }
-    .banner img {
-      max-width: 50%;
-      height: auto;
-      z-index: 2;
-      position: relative;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    .banner-text {
-      text-align: right;
-      max-width: 50%;
-      margin-left: 2em;
-      z-index: 2;
-      position: relative;
-    }
-    .banner-text h1 {
-      font-size: 2.5em;
-      color: white;
-      margin-bottom: 0.5em;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-      line-height: 1.2;
-    }
-    .banner-text p {
-      font-size: 1.2em;
-      color: #e0e0e0;
-      margin-bottom: 1.5em;
-      line-height: 1.6;
-    }
-    .banner-text a {
-      display: inline-block;
-      background: linear-gradient(45deg, #dc143c, #ff1744);
-      color: white;
-      padding: 1em 2em;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 50px;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .banner-text a:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
-    }
+        /* NAVIGATION */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
 
-    /* ABOUT SECTION */
-    .about-section {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      margin: 4em auto;
-      background: white;
-      border-radius: 15px;
-      padding: 3em;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 1200px;
-    }
-    .about-section img {
-      width: 48%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    }
-    .about-section .text {
-      width: 48%;
-      text-align: right;
-    }
-    .about-section .text h2 {
-      color: #dc143c;
-      font-size: 2.2em;
-      margin-bottom: 1em;
-    }
-    .about-section .text h3 {
-      font-size: 1.4em;
-      margin-bottom: 1em;
-      color: #333;
-    }
-    .about-section .text p {
-      font-size: 1.1em;
-      line-height: 1.7;
-      color: #555;
-    }
+        nav ul li {
+            position: relative;
+        }
 
-    /* GALLERY - IMPROVED */
-    .gallery-section {
-      margin: 4em auto;
-      max-width: 1200px;
-    }
-    .gallery-section h2 {
-      color: #dc143c;
-      text-align: center;
-      font-size: 2.2em;
-      margin-bottom: 2em;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1em;
-      margin-top: 2em;
-    }
-    .gallery img {
-      width: 100%;
-      height: 250px;
-      object-fit: contain;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      background: white;
-      padding: 0.5em;
-    }
-    .gallery img:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+        nav ul li a,
+        nav ul li button {
+            background: transparent;
+            border: none;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 0.8em 1.2em;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 8px;
+            display: inline-block;
+            white-space: nowrap;
+        }
 
-    /* CONTACT SECTION */
-    .contact-section {
-      background: linear-gradient(135deg, white, #f8f9fa);
-      padding: 3em;
-      border-radius: 15px;
-      margin: 4em auto;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 1200px;
-    }
-    .contact-section h2 {
-      color: #dc143c;
-      font-size: 2.2em;
-      margin-bottom: 1em;
-    }
-    .contact-section p {
-      font-size: 1.2em;
-      margin-bottom: 2em;
-      color: #666;
-    }
-    .contact-section form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      align-items: center;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .attachment-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      font-size: 1em;
-      color: #666;
-      padding: 1.2em;
-      border: 2px dashed #e0e0e0;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .attachment-row:hover {
-      border-color: #dc143c;
-      color: #dc143c;
-    }
-    .attachment-row span:first-child {
-      display: flex;
-      align-items: center;
-      color: #dc143c;
-      font-weight: 600;
-    }
-    .attachment-row span:first-child::before {
-      content: "📎";
-      margin-right: 0.5em;
-      font-size: 1.2em;
-    }
-    .contact-section input,
-    .contact-section textarea {
-      padding: 1.2em;
-      font-size: 1em;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      width: 100%;
-      font-family: 'Montserrat', sans-serif;
-      transition: all 0.3s ease;
-    }
-    .contact-section input:focus,
-    .contact-section textarea:focus {
-      outline: none;
-      border-color: #dc143c;
-      box-shadow: 0 0 10px rgba(220, 20, 60, 0.2);
-    }
-    .contact-section button {
-      background: linear-gradient(45deg, #dc143c, #ff1744);
-      color: white;
-      padding: 1em 3em;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.1em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
-    }
-    .contact-section button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
-    }
+        nav ul li a:hover,
+        nav ul li button:hover {
+            background: #dc143c;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
+        }
 
-    /* CONTACT INFO */
-    .contact-info {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      max-width: 1000px;
-      margin: 3em auto;
-      background: white;
-      border-radius: 15px;
-      padding: 3em;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    .contact-info div {
-      flex: 1;
-      margin: 1em;
-      text-align: center;
-    }
-    .contact-info h4 {
-      font-size: 1.5em;
-      margin-bottom: 1em;
-      color: #dc143c;
-    }
-    .contact-info p {
-      margin: 0.5em 0;
-      font-size: 1.1em;
-    }
-    .contact-info p span {
-      color: #dc143c;
-      font-weight: bold;
-    }
-    .contact-info a {
-      color: #dc143c;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    .contact-info a:hover {
-      color: #ff1744;
-    }
+        /* DROPDOWN */
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            padding: 0.5em 0;
+            list-style: none;
+            min-width: 180px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            z-index: 1001;
+        }
 
-    /* FOOTER */
-    footer {
-      background: linear-gradient(135deg, #333, #1a1a1a);
-      color: white;
-      padding: 2em 0;
-      margin-top: 4em;
-    }
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 2em;
-    }
-    .footer-content p {
-      margin: 0;
-      font-size: 1em;
-    }
-    .instagram-link img {
-      width: 28px;
-      height: 28px;
-      filter: invert(100%);
-      transition: all 0.3s ease;
-    }
-    .instagram-link:hover img {
-      transform: scale(1.2);
-      filter: invert(100%) sepia(100%) saturate(2000%) hue-rotate(315deg);
-    }
+        nav ul li.show .dropdown-menu {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
 
-    .file-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5em;
-      background: #f8f9fa;
-      border-radius: 5px;
-      margin-bottom: 0.5em;
-      border: 1px solid #e0e0e0;
-    }
-    .file-item .file-name {
-      color: #333;
-      font-size: 0.9em;
-    }
-    .file-item .remove-file {
-      background: #dc143c;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      font-size: 0.8em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .file-item .remove-file:hover {
-      background: #b01030;
-    }
+        .dropdown-menu li a {
+            display: block;
+            padding: 0.8em 1.2em;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85em;
+            font-weight: 600;
+            border-radius: 0;
+            margin: 0;
+        }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      /* Tablet adjustments */
-      .banner {
-        padding: 2em 1.5em;
-        min-height: 400px;
-      }
-      .banner-text h1 {
-        font-size: 2.2em;
-      }
-      .about-section, .contact-section, .gallery-section {
-        margin: 3em auto;
-        padding: 2em;
-      }
-      .gallery {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+        .dropdown-menu li a:hover {
+            background: #dc143c;
+            color: white;
+            transform: none;
+            box-shadow: none;
+        }
 
-    @media (max-width: 768px) {
-      /* Mobile adjustments */
-      header {
-        padding: 0.8em 1em;
-      }
-      header img {
-        height: 40px;
-      }
-      nav ul {
-        gap: 0.5em;
-      }
-      nav ul li a,
-      nav ul li button {
-        padding: 0.6em 0.8em;
-        font-size: 0.8em;
-      }
-      .dropdown-menu {
-        min-width: 150px;
-        left: -50px;
-      }
-      
-      main {
-        margin-top: 70px;
-      }
-      section {
-        padding: 1.5em 1em;
-      }
-      
-      .banner {
-        flex-direction: column;
-        text-align: center;
-        padding: 2em 1em;
-        min-height: 300px;
-      }
-      .banner img,
-      .banner-text {
-        max-width: 100%;
-        margin: 1em 0;
-      }
-      .banner-text {
-        text-align: center;
-        margin-left: 0;
-      }
-      .banner-text h1 {
-        font-size: 1.8em;
-      }
-      .banner-text p {
-        font-size: 1em;
-      }
-      .banner-text a {
-        padding: 0.8em 1.5em;
-        font-size: 0.9em;
-      }
-      
-      .about-section {
-        flex-direction: column;
-        text-align: center;
-        margin: 2em auto;
-        padding: 2em 1.5em;
-      }
-      .about-section img,
-      .about-section .text {
-        width: 100%;
-        margin: 1em 0;
-      }
-      .about-section .text {
-        text-align: center;
-      }
-      .about-section .text h2 {
-        font-size: 1.8em;
-      }
-      .about-section .text h3 {
-        font-size: 1.2em;
-      }
-      .about-section .text p {
-        font-size: 1em;
-      }
-      
-      .gallery-section {
-        margin: 2em auto;
-        padding: 1.5em 1em;
-      }
-      .gallery-section h2 {
-        font-size: 1.8em;
-        margin-bottom: 1.5em;
-      }
-      .gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8em;
-      }
-      .gallery img {
-        height: 200px;
-        padding: 0.3em;
-      }
-      
-      .contact-section {
-        margin: 2em auto;
-        padding: 2em 1.5em;
-      }
-      .contact-section h2 {
-        font-size: 1.8em;
-      }
-      .contact-section p {
-        font-size: 1em;
-      }
-      .contact-section form {
-        max-width: 100%;
-      }
-      .contact-section input,
-      .contact-section textarea {
-        padding: 1em;
-        font-size: 0.9em;
-      }
-      .attachment-row {
-        padding: 1em;
-        font-size: 0.9em;
-      }
-      
-      .contact-info {
-        margin: 2em auto;
-        padding: 2em 1.5em;
-        text-align: center;
-      }
-      .contact-info h4 {
-        font-size: 1.3em;
-      }
-      .contact-info p {
-        font-size: 1em;
-      }
-      
-      .footer-content {
-        flex-direction: column;
-        gap: 1em;
-        text-align: center;
-        padding: 0 1em;
-      }
-    }
+        /* MAIN CONTENT */
+        main {
+            margin-top: 80px;
+        }
 
-    @media (max-width: 480px) {
-      /* Small mobile adjustments */
-      header {
-        padding: 0.5em 0.8em;
-      }
-      nav ul li a,
-      nav ul li button {
-        padding: 0.5em 0.6em;
-        font-size: 0.7em;
-      }
-      
-      .banner-text h1 {
-        font-size: 1.5em;
-      }
-      .banner-text p {
-        font-size: 0.9em;
-      }
-      
-      .about-section, .contact-section {
-        padding: 1.5em 1em;
-      }
-      .about-section .text h2,
-      .contact-section h2,
-      .gallery-section h2 {
-        font-size: 1.5em;
-      }
-      
-      .gallery {
-        grid-template-columns: 1fr;
-        gap: 1em;
-      }
-      .gallery img {
-        height: 250px;
-      }
-      
-      .contact-info {
-        padding: 1.5em 1em;
-      }
-      .contact-info p {
-        font-size: 0.9em;
-      }
-      
-      .file-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5em;
-      }
-      .file-item .file-name {
-        font-size: 0.8em;
-        word-break: break-all;
-      }
-    }
-  </style>
+        section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2em 1em;
+        }
+
+        /* BANNER - FIXED */
+        .banner {
+            display: flex;
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: white;
+            align-items: center;
+            justify-content: center;
+            padding: 2em;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(220, 20, 60, 0.1), rgba(255, 23, 68, 0.1));
+            z-index: 1;
+        }
+
+        .banner img {
+            max-width: 50%;
+            height: auto;
+            z-index: 2;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .banner-text {
+            text-align: right;
+            max-width: 50%;
+            margin-left: 2em;
+            z-index: 2;
+            position: relative;
+        }
+
+        .banner-text h1 {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+
+        .banner-text p {
+            font-size: 1.2em;
+            color: #e0e0e0;
+            margin-bottom: 1.5em;
+            line-height: 1.6;
+        }
+
+        .banner-text a {
+            display: inline-block;
+            background: linear-gradient(45deg, #dc143c, #ff1744);
+            color: white;
+            padding: 1em 2em;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .banner-text a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
+        }
+
+        /* ABOUT SECTION */
+        .about-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin: 4em auto;
+            background: white;
+            border-radius: 15px;
+            padding: 3em;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+        }
+
+        .about-section img {
+            width: 48%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .about-section .text {
+            width: 48%;
+            text-align: right;
+        }
+
+        .about-section .text h2 {
+            color: #dc143c;
+            font-size: 2.2em;
+            margin-bottom: 1em;
+        }
+
+        .about-section .text h3 {
+            font-size: 1.4em;
+            margin-bottom: 1em;
+            color: #333;
+        }
+
+        .about-section .text p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        /* GALLERY - IMPROVED */
+        .gallery-section {
+            margin: 4em auto;
+            max-width: 1200px;
+        }
+
+        .gallery-section h2 {
+            color: #dc143c;
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 2em;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1em;
+            margin-top: 2em;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 0.5em;
+        }
+
+        .gallery img:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* CONTACT SECTION */
+        .contact-section {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            padding: 3em;
+            border-radius: 15px;
+            margin: 4em auto;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+        }
+
+        .contact-section h2 {
+            color: #dc143c;
+            font-size: 2.2em;
+            margin-bottom: 1em;
+        }
+
+        .contact-section p {
+            font-size: 1.2em;
+            margin-bottom: 2em;
+            color: #666;
+        }
+
+        .contact-section form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .attachment-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 1em;
+            color: #666;
+            padding: 1.2em;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .attachment-row:hover {
+            border-color: #dc143c;
+            color: #dc143c;
+        }
+
+        .attachment-row span:first-child {
+            display: flex;
+            align-items: center;
+            color: #dc143c;
+            font-weight: 600;
+        }
+
+        .attachment-row span:first-child::before {
+            content: "📎";
+            margin-right: 0.5em;
+            font-size: 1.2em;
+        }
+
+        .contact-section input,
+        .contact-section textarea {
+            padding: 1.2em;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .contact-section input:focus,
+        .contact-section textarea:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 10px rgba(220, 20, 60, 0.2);
+        }
+
+        .contact-section button {
+            background: linear-gradient(45deg, #dc143c, #ff1744);
+            color: white;
+            padding: 1em 3em;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
+        }
+
+        .contact-section button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6);
+        }
+
+        /* CONTACT INFO */
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 3em auto;
+            background: white;
+            border-radius: 15px;
+            padding: 3em;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info div {
+            flex: 1;
+            margin: 1em;
+            text-align: center;
+        }
+
+        .contact-info h4 {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+            color: #dc143c;
+        }
+
+        .contact-info p {
+            margin: 0.5em 0;
+            font-size: 1.1em;
+        }
+
+        .contact-info p span {
+            color: #dc143c;
+            font-weight: bold;
+        }
+
+        .contact-info a {
+            color: #dc143c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #ff1744;
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            color: white;
+            padding: 2em 0;
+            margin-top: 4em;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2em;
+        }
+
+        .footer-content p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        .instagram-link img {
+            width: 28px;
+            height: 28px;
+            filter: invert(100%);
+            transition: all 0.3s ease;
+        }
+
+        .instagram-link:hover img {
+            transform: scale(1.2);
+            filter: invert(100%) sepia(100%) saturate(2000%) hue-rotate(315deg);
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5em;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 0.5em;
+            border: 1px solid #e0e0e0;
+        }
+
+        .file-item .file-name {
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .file-item .remove-file {
+            background: #dc143c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-item .remove-file:hover {
+            background: #b01030;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+
+            /* Tablet adjustments */
+            .banner {
+                padding: 2em 1.5em;
+                min-height: 400px;
+            }
+
+            .banner-text h1 {
+                font-size: 2.2em;
+            }
+
+            .about-section,
+            .contact-section,
+            .gallery-section {
+                margin: 3em auto;
+                padding: 2em;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* Mobile adjustments */
+            header {
+                padding: 0.8em 1em;
+            }
+
+            header img {
+                height: 40px;
+            }
+
+            nav ul {
+                gap: 0.5em;
+            }
+
+            nav ul li a,
+            nav ul li button {
+                padding: 0.6em 0.8em;
+                font-size: 0.8em;
+            }
+
+            .dropdown-menu {
+                min-width: 150px;
+                left: -50px;
+            }
+
+            main {
+                margin-top: 70px;
+            }
+
+            section {
+                padding: 1.5em 1em;
+            }
+
+            .banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 2em 1em;
+                min-height: 300px;
+            }
+
+            .banner img,
+            .banner-text {
+                max-width: 100%;
+                margin: 1em 0;
+            }
+
+            .banner-text {
+                text-align: center;
+                margin-left: 0;
+            }
+
+            .banner-text h1 {
+                font-size: 1.8em;
+            }
+
+            .banner-text p {
+                font-size: 1em;
+            }
+
+            .banner-text a {
+                padding: 0.8em 1.5em;
+                font-size: 0.9em;
+            }
+
+            .about-section {
+                flex-direction: column;
+                text-align: center;
+                margin: 2em auto;
+                padding: 2em 1.5em;
+            }
+
+            .about-section img,
+            .about-section .text {
+                width: 100%;
+                margin: 1em 0;
+            }
+
+            .about-section .text {
+                text-align: center;
+            }
+
+            .about-section .text h2 {
+                font-size: 1.8em;
+            }
+
+            .about-section .text h3 {
+                font-size: 1.2em;
+            }
+
+            .about-section .text p {
+                font-size: 1em;
+            }
+
+            .gallery-section {
+                margin: 2em auto;
+                padding: 1.5em 1em;
+            }
+
+            .gallery-section h2 {
+                font-size: 1.8em;
+                margin-bottom: 1.5em;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8em;
+            }
+
+            .gallery img {
+                height: 200px;
+                padding: 0.3em;
+            }
+
+            .contact-section {
+                margin: 2em auto;
+                padding: 2em 1.5em;
+            }
+
+            .contact-section h2 {
+                font-size: 1.8em;
+            }
+
+            .contact-section p {
+                font-size: 1em;
+            }
+
+            .contact-section form {
+                max-width: 100%;
+            }
+
+            .contact-section input,
+            .contact-section textarea {
+                padding: 1em;
+                font-size: 0.9em;
+            }
+
+            .attachment-row {
+                padding: 1em;
+                font-size: 0.9em;
+            }
+
+            .contact-info {
+                margin: 2em auto;
+                padding: 2em 1.5em;
+                text-align: center;
+            }
+
+            .contact-info h4 {
+                font-size: 1.3em;
+            }
+
+            .contact-info p {
+                font-size: 1em;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1em;
+                text-align: center;
+                padding: 0 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            /* Small mobile adjustments */
+            header {
+                padding: 0.5em 0.8em;
+            }
+
+            nav ul li a,
+            nav ul li button {
+                padding: 0.5em 0.6em;
+                font-size: 0.7em;
+            }
+
+            .banner-text h1 {
+                font-size: 1.5em;
+            }
+
+            .banner-text p {
+                font-size: 0.9em;
+            }
+
+            .about-section,
+            .contact-section {
+                padding: 1.5em 1em;
+            }
+
+            .about-section .text h2,
+            .contact-section h2,
+            .gallery-section h2 {
+                font-size: 1.5em;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1em;
+            }
+
+            .gallery img {
+                height: 250px;
+            }
+
+            .contact-info {
+                padding: 1.5em 1em;
+            }
+
+            .contact-info p {
+                font-size: 0.9em;
+            }
+
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5em;
+            }
+
+            .file-item .file-name {
+                font-size: 0.8em;
+                word-break: break-all;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
-    <nav>
-      <ul>
-        <li><a href='/'>HOME</a></li>
-        <li onclick="this.classList.toggle('show')">
-          <button type="button">SERVICES</button>
-          <ul class="dropdown-menu">
-            <li><a href='/services'>List of Services</a></li>
-            <li><a href='/booking'>Book an Appointment</a></li>
-          </ul>
-        </li>
-        <li><a href="#gallery">GALLERY</a></li>
-        <li><a href="#contact">CONTACT US</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/Buff%20stop%20logo.png" alt="Buffstop Logo">
+        <nav>
+            <ul>
+                <li><a href='/'>HOME</a></li>
+                <li onclick="this.classList.toggle('show')">
+                    <button type="button">SERVICES</button>
+                    <ul class="dropdown-menu">
+                        <li><a href='/services'>List of Services</a></li>
+                        <li><a href='/booking'>Book an Appointment</a></li>
+                    </ul>
+                </li>
+                <li><a href="#gallery">GALLERY</a></li>
+                <li><a href="#contact">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section class="banner">
-      <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/buffstop%20banner%20v2.png" alt="Buff Stop Banner">
-      <div class="banner-text">
-        <h1>Premium Car Detailing Services</h1>
-        <p>Revive your vehicle's shine with our expert detailing services. Professional quality, attention to detail, and results that speak for themselves.</p>
-        <a href='/booking'>Book Your Detail Now</a>
-      </div>
-    </section>
+    <main>
+        <section class="banner">
+            <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/buffstop%20banner%20v2.png"
+                alt="Buff Stop Banner">
+            <div class="banner-text">
+                <h1>Premium Car Detailing Services</h1>
+                <p>Revive your vehicle's shine with our expert detailing services. Professional quality, attention to
+                    detail, and results that speak for themselves.</p>
+                <a href='/booking'>Book Your Detail Now</a>
+            </div>
+        </section>
 
-    <section class="about-section">
-      <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/pre-buffstop%20treatment.jpg" alt="Pre Buff Stop Treatment">
-      <div class="text">
-        <h2>About TheBuffStop</h2>
-        <h3>Our Mission</h3>
-        <p>At TheBuffStop, we are dedicated to providing top-notch car detailing services that exceed your expectations. Our mission is to ensure every vehicle shines like new, using eco-friendly products and advanced techniques that protect your investment while delivering stunning results.</p>
-      </div>
-    </section>
+        <section class="about-section">
+            <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/pre-buffstop%20treatment.jpg"
+                alt="Pre Buff Stop Treatment">
+            <div class="text">
+                <h2>About TheBuffStop</h2>
+                <h3>Our Mission</h3>
+                <p>At TheBuffStop, we are dedicated to providing top-notch car detailing services that exceed your
+                    expectations. Our mission is to ensure every vehicle shines like new, using eco-friendly products
+                    and advanced techniques that protect your investment while delivering stunning results.</p>
+            </div>
+        </section>
 
-    <section class="gallery-section" id="gallery">
-      <h2>Transformations that shine: Our detailing gallery</h2>
-      <div class="gallery">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2b.jpg" alt="Before Treatment 1">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3b.jpg" alt="Before Treatment 2">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4b.jpg" alt="Before Treatment 3">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5b.jpg" alt="Before Treatment 4">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2a.jpg" alt="After Treatment 1">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3a.jpg" alt="After Treatment 2">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4a.jpg" alt="After Treatment 3">
-        <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5a.jpg" alt="After Treatment 4">
-      </div>
-    </section>
+        <section class="gallery-section" id="gallery">
+            <h2>Transformations that shine: Our detailing gallery</h2>
+            <div class="gallery">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2b.jpg" alt="Before Treatment 1">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3b.jpg" alt="Before Treatment 2">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4b.jpg" alt="Before Treatment 3">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5b.jpg" alt="Before Treatment 4">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/2a.jpg" alt="After Treatment 1">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/3a.jpg" alt="After Treatment 2">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/4a.jpg" alt="After Treatment 3">
+                <img src="https://raw.githubusercontent.com/t4lmb/thebuffstop/main/5a.jpg" alt="After Treatment 4">
+            </div>
+        </section>
 
-<section class="contact-section" id="contact">
-      <h2>Contact Us</h2>
-      <p>Have any questions? We'd love to hear from you!</p>
-      <form id="contact-form">
-        <input type="text" id="contact-name" placeholder="Your Name" required>
-        <input type="email" id="contact-email" placeholder="Your Email" required>
-        <textarea id="contact-message" rows="5" placeholder="Tell us about your vehicle and what you need..." required></textarea>
-        <div class="attachment-row" onclick="document.getElementById('file-input').click();">
-          <span>Attach Files</span>
-          <span id="attachment-count">Attachments (0)</span>
+        <section class="contact-section" id="contact">
+            <h2>Contact Us</h2>
+            <p>Have any questions? We'd love to hear from you!</p>
+            <form id="contact-form">
+                <input type="text" id="contact-name" placeholder="Your Name" required>
+                <input type="email" id="contact-email" placeholder="Your Email" required>
+                <textarea id="contact-message" rows="5" placeholder="Tell us about your vehicle and what you need..."
+                    required></textarea>
+                <div class="attachment-row" onclick="document.getElementById('file-input').click();">
+                    <span>Attach Files</span>
+                    <span id="attachment-count">Attachments (0)</span>
+                </div>
+                <input type="file" id="file-input" name="attachments" multiple accept="image/*,.pdf,.doc,.docx"
+                    style="display: none;">
+                <div id="file-list" style="display: none; margin-top: 1em; text-align: left;">
+                    <h4 style="color: #dc143c; margin-bottom: 0.5em;">Selected Files:</h4>
+                    <ul id="selected-files" style="list-style: none; padding: 0;"></ul>
+                </div>
+                <button type="submit">SEND MESSAGE</button>
+            </form>
+        </section>
+
+        <section class="contact-info">
+            <div>
+                <h4>TheBuffStop</h4>
+                <p>Evergreen Street, Fredericton, NB E3B 6R7, Canada</p>
+                <p><strong>Majid Debly</strong>:</p>
+                <p><a href="mailto:booking@thebuffstop.com">majid@thebuffstop.com</a></p>
+                <p><strong>Eric Johnson</strong>:</p>
+                <p><a href="mailto:help@thebuffstop.com">eric@thebuffstop.com</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 TheBuffStop - All Rights Reserved.</p>
+            <a href="https://www.instagram.com/thebuffstop/" target="_blank" class="instagram-link"
+                aria-label="Instagram">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram Icon">
+            </a>
         </div>
-        <input type="file" id="file-input" name="attachments" multiple accept="image/*,.pdf,.doc,.docx" style="display: none;">
-        <div id="file-list" style="display: none; margin-top: 1em; text-align: left;">
-          <h4 style="color: #dc143c; margin-bottom: 0.5em;">Selected Files:</h4>
-          <ul id="selected-files" style="list-style: none; padding: 0;"></ul>
-        </div>
-        <button type="submit">SEND MESSAGE</button>
-      </form>
-    </section>
+    </footer>
 
-    <section class="contact-info">
-      <div>
-        <h4>TheBuffStop</h4>
-        <p>Evergreen Street, Fredericton, NB E3B 6R7, Canada</p>
-        <p><strong>Majid Debly</strong>:</p>
-        <p><a href="mailto:booking@thebuffstop.com">majid@thebuffstop.com</a></p>
-        <p><strong>Eric Johnson</strong>:</p>
-        <p><a href="mailto:help@thebuffstop.com">eric@thebuffstop.com</a></p>
-      </div>
-    </section>
-  </main>
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const attachmentCount = document.getElementById('attachment-count');
+        const fileList = document.getElementById('file-list');
+        const selectedFiles = document.getElementById('selected-files');
+        let filesArray = [];
 
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 TheBuffStop - All Rights Reserved.</p>
-      <a href="https://www.instagram.com/thebuffstop/" target="_blank" class="instagram-link" aria-label="Instagram">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram Icon">
-      </a>
-    </div>
-  </footer>
+        fileInput.addEventListener('change', function (e) {
+            const newFiles = Array.from(e.target.files);
+            filesArray = [...filesArray, ...newFiles];
+            updateFileDisplay();
+        });
 
-  <script>
-    const fileInput = document.getElementById('file-input');
-    const attachmentCount = document.getElementById('attachment-count');
-    const fileList = document.getElementById('file-list');
-    const selectedFiles = document.getElementById('selected-files');
-    let filesArray = [];
+        function updateFileDisplay() {
+            attachmentCount.textContent = `Attachments (${filesArray.length})`;
 
-    fileInput.addEventListener('change', function(e) {
-      const newFiles = Array.from(e.target.files);
-      filesArray = [...filesArray, ...newFiles];
-      updateFileDisplay();
-    });
+            if (filesArray.length > 0) {
+                fileList.style.display = 'block';
+                selectedFiles.innerHTML = '';
 
-    function updateFileDisplay() {
-      attachmentCount.textContent = `Attachments (${filesArray.length})`;
-      
-      if (filesArray.length > 0) {
-        fileList.style.display = 'block';
-        selectedFiles.innerHTML = '';
-        
-        filesArray.forEach((file, index) => {
-          const li = document.createElement('li');
-          li.className = 'file-item';
-          li.innerHTML = `
+                filesArray.forEach((file, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    li.innerHTML = `
             <span class="file-name">${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
             <button class="remove-file" onclick="removeFile(${index})" type="button">×</button>
           `;
-          selectedFiles.appendChild(li);
-        });
-      } else {
-        fileList.style.display = 'none';
-      }
-    }
+                    selectedFiles.appendChild(li);
+                });
+            } else {
+                fileList.style.display = 'none';
+            }
+        }
 
-    function removeFile(index) {
-      filesArray.splice(index, 1);
-      updateFileDisplay();
-      
-      // Update the file input
-      const dt = new DataTransfer();
-      filesArray.forEach(file => dt.items.add(file));
-      fileInput.files = dt.files;
-    }
+        function removeFile(index) {
+            filesArray.splice(index, 1);
+            updateFileDisplay();
 
-    // Contact form submission handler
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('contact-name').value.trim();
-      const email = document.getElementById('contact-email').value.trim();
-      const message = document.getElementById('contact-message').value.trim();
-      
-      if (!name || !email || !message) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-      
-      // Create email content
-      const subject = encodeURIComponent(`Contact Form - Message from ${name}`);
-      
-      let body = `Hello,\n\nYou have received a new message from your website contact form:\n\n`;
-      body += `Name: ${name}\n`;
-      body += `Email: ${email}\n`;
-      body += `Message:\n${message}\n\n`;
-      
-      if (filesArray.length > 0) {
-        body += `Note: The customer tried to attach ${filesArray.length} file(s):\n`;
-        filesArray.forEach(file => {
-          body += `- ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n`;
+            // Update the file input
+            const dt = new DataTransfer();
+            filesArray.forEach(file => dt.items.add(file));
+            fileInput.files = dt.files;
+        }
+
+        // Contact form submission handler
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Create email content
+            const subject = encodeURIComponent(`Contact Form - Message from ${name}`);
+
+            let body = `Hello,\n\nYou have received a new message from your website contact form:\n\n`;
+            body += `Name: ${name}\n`;
+            body += `Email: ${email}\n`;
+            body += `Message:\n${message}\n\n`;
+
+            if (filesArray.length > 0) {
+                body += `Note: The customer tried to attach ${filesArray.length} file(s):\n`;
+                filesArray.forEach(file => {
+                    body += `- ${file.name} (${(file.size / 1024).toFixed(1)} KB)\n`;
+                });
+                body += `\nPlease ask them to send the files separately or provide an alternative way to share them.\n\n`;
+            }
+
+            body += `Please reply directly to: ${email}\n\nBest regards,\nWebsite Contact Form`;
+
+            const encodedBody = encodeURIComponent(body);
+
+            // Open default email client
+            const mailtoLink = `mailto:help@thebuffstop.com?subject=${subject}&body=${encodedBody}`;
+            window.location.href = mailtoLink;
+
+            // Show success message
+            alert('Your email client should now open with the message pre-filled. Please send the email to complete your contact request.');
+
+            // Reset form
+            this.reset();
+            filesArray = [];
+            updateFileDisplay();
         });
-        body += `\nPlease ask them to send the files separately or provide an alternative way to share them.\n\n`;
-      }
-      
-      body += `Please reply directly to: ${email}\n\nBest regards,\nWebsite Contact Form`;
-      
-      const encodedBody = encodeURIComponent(body);
-      
-      // Open default email client
-      const mailtoLink = `mailto:test@thebuffstop.com?subject=${subject}&body=${encodedBody}`;
-      window.location.href = mailtoLink;
-      
-      // Show success message
-      alert('Your email client should now open with the message pre-filled. Please send the email to complete your contact request.');
-      
-      // Reset form
-      this.reset();
-      filesArray = [];
-      updateFileDisplay();
-    });
-  </script>
+    </script>
 </body>
+
 </html>
