@@ -846,13 +846,13 @@
       const encodedBody = encodeURIComponent(body);
       
       // Open default email client
-      const mailtoLink = `mailto:majid@thebuffstop.com?subject=${subject}&body=${encodedBody}`;
+      const mailtoLink = `mailto:test@thebuffstop.com?subject=${subject}&body=${encodedBody}`;
       window.location.href = mailtoLink;
       
       // Show success message
       alert('Your email client should now open with the message pre-filled. Please send the email to complete your contact request.');
       
-      // Optional: Reset form
+      // Reset form
       this.reset();
       filesArray = [];
       updateFileDisplay();
