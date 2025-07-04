@@ -1,6 +1,7 @@
 🚗 The Buff Stop - Premium Car Detailing Services
 
-🌟 About The Buff Stop
+🌟 About The Buff Stop:
+
 The Buff Stop is a premium car detailing service located in Fredericton, New Brunswick, Canada. Specializing in professional automotive detailing that brings vehicles back to showroom condition using eco-friendly products and advanced techniques.
 
 Check out other pages!
